@@ -68,4 +68,8 @@ defineProps({
 .router-link-active span {
   color: #1f222c;
 }
+
+.tasks-icon > div {
+  mask: url(/static/images/dashboard/icons/orders.svg) no-repeat center / contain;
+}
 </style>

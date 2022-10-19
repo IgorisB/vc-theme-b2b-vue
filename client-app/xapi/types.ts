@@ -401,6 +401,10 @@ export type CategoryEdge = {
   node?: Maybe<Category>;
 };
 
+export type ConfirmTaskCommandType = {
+  id: Scalars['String'];
+};
+
 /** A connection from an object to a list of objects of type `Contact`. */
 export type ContactConnection = {
   /** A list of all of the edges returned in the connection. */
@@ -490,6 +494,11 @@ export type CouponType = {
   code?: Maybe<Scalars['String']>;
   /** Is coupon was applied successfully */
   isAppliedSuccessfully?: Maybe<Scalars['Boolean']>;
+};
+
+export type CreateQuoteFromCartCommandType = {
+  cartId: Scalars['String'];
+  comment: Scalars['String'];
 };
 
 export type CurrencyType = {
@@ -927,7 +936,7 @@ export type IdentityErrorInfoType = {
   /** Error description */
   description?: Maybe<Scalars['String']>;
   /** Error parameter */
-  errorParameter?: Maybe<Scalars['Int']>;
+  parameter?: Maybe<Scalars['String']>;
 };
 
 export type IdentityErrorType = {
@@ -1419,6 +1428,10 @@ export type InputKeyValueType = {
   value?: InputMaybe<Scalars['String']>;
 };
 
+export type InputLockUnlockOrganizationContactType = {
+  userId?: InputMaybe<Scalars['String']>;
+};
+
 export type InputMemberAddressType = {
   addressType?: InputMaybe<Scalars['Int']>;
   /** City */
@@ -1688,6 +1701,11 @@ export type InputRemoveItemType = {
   lineItemId: Scalars['String'];
   storeId: Scalars['String'];
   userId: Scalars['String'];
+};
+
+export type InputRemoveMemberFromOrganizationType = {
+  contactId?: InputMaybe<Scalars['String']>;
+  organizationId?: InputMaybe<Scalars['String']>;
 };
 
 export type InputRemoveShipmentType = {
@@ -2253,9 +2271,11 @@ export type Mutations = {
   clearCart?: Maybe<CartType>;
   clearPayments?: Maybe<CartType>;
   clearShipments?: Maybe<CartType>;
+  confirmTask?: Maybe<WorkTaskType>;
   createContact?: Maybe<ContactType>;
   createOrderFromCart?: Maybe<CustomerOrderType>;
   createOrganization?: Maybe<Organization>;
+  createQuoteFromCart?: Maybe<QuoteType>;
   createUser?: Maybe<IdentityResultType>;
   createWishlist?: Maybe<WishlistType>;
   deleteContact?: Maybe<Scalars['Boolean']>;
@@ -2263,16 +2283,19 @@ export type Mutations = {
   deleteUsers?: Maybe<IdentityResultType>;
   initializePayment?: Maybe<InitializePaymentResultType>;
   inviteUser?: Maybe<CustomIdentityResultType>;
+  lockOrganizationContact?: Maybe<ContactType>;
   mergeCart?: Maybe<CartType>;
   moveWishlistItem?: Maybe<WishlistType>;
   /** @deprecated Obsolete. Use 'initializePayment' mutation */
   processOrderPayment?: Maybe<ProcessPaymentRequestResultType>;
   registerByInvitation?: Maybe<CustomIdentityResultType>;
   rejectGiftItems?: Maybe<CartType>;
+  rejectTask?: Maybe<WorkTaskType>;
   removeCart?: Maybe<Scalars['Boolean']>;
   removeCartAddress?: Maybe<CartType>;
   removeCartItem?: Maybe<CartType>;
   removeCoupon?: Maybe<CartType>;
+  removeMemberFromOrganization?: Maybe<ContactType>;
   removeShipment?: Maybe<CartType>;
   removeWishlist?: Maybe<Scalars['Boolean']>;
   removeWishlistItem?: Maybe<WishlistType>;
@@ -2280,6 +2303,7 @@ export type Mutations = {
   requestRegistration?: Maybe<RequestRegistrationType>;
   resetPasswordByToken?: Maybe<CustomIdentityResultType>;
   sendVerifyEmail?: Maybe<Scalars['Boolean']>;
+  unlockOrganizationContact?: Maybe<ContactType>;
   updateCartDynamicProperties?: Maybe<CartType>;
   updateCartItemDynamicProperties?: Maybe<CartType>;
   updateCartPaymentDynamicProperties?: Maybe<CartType>;
@@ -2409,6 +2433,11 @@ export type MutationsClearShipmentsArgs = {
 };
 
 
+export type MutationsConfirmTaskArgs = {
+  command: ConfirmTaskCommandType;
+};
+
+
 export type MutationsCreateContactArgs = {
   command: InputCreateContactType;
 };
@@ -2421,6 +2450,11 @@ export type MutationsCreateOrderFromCartArgs = {
 
 export type MutationsCreateOrganizationArgs = {
   command: InputCreateOrganizationType;
+};
+
+
+export type MutationsCreateQuoteFromCartArgs = {
+  command: CreateQuoteFromCartCommandType;
 };
 
 
@@ -2459,6 +2493,11 @@ export type MutationsInviteUserArgs = {
 };
 
 
+export type MutationsLockOrganizationContactArgs = {
+  command: InputLockUnlockOrganizationContactType;
+};
+
+
 export type MutationsMergeCartArgs = {
   command: InputMergeCartType;
 };
@@ -2484,6 +2523,11 @@ export type MutationsRejectGiftItemsArgs = {
 };
 
 
+export type MutationsRejectTaskArgs = {
+  command: RejectTaskCommandType;
+};
+
+
 export type MutationsRemoveCartArgs = {
   command: InputRemoveCartType;
 };
@@ -2501,6 +2545,11 @@ export type MutationsRemoveCartItemArgs = {
 
 export type MutationsRemoveCouponArgs = {
   command: InputRemoveCouponType;
+};
+
+
+export type MutationsRemoveMemberFromOrganizationArgs = {
+  command: InputRemoveMemberFromOrganizationType;
 };
 
 
@@ -2536,6 +2585,11 @@ export type MutationsResetPasswordByTokenArgs = {
 
 export type MutationsSendVerifyEmailArgs = {
   command?: InputMaybe<InputSendVerifyEmailType>;
+};
+
+
+export type MutationsUnlockOrganizationContactArgs = {
+  command: InputLockUnlockOrganizationContactType;
 };
 
 
@@ -3441,9 +3495,12 @@ export type Query = {
   products?: Maybe<ProductConnection>;
   properties?: Maybe<PropertyConnection>;
   property?: Maybe<Property>;
+  quote?: Maybe<QuoteType>;
+  quotes?: Maybe<QuoteConnection>;
   regions?: Maybe<Array<Maybe<CountryRegionType>>>;
   requestPasswordReset?: Maybe<Scalars['Boolean']>;
   role?: Maybe<RoleType>;
+  tasks?: Maybe<WorkTaskConnection>;
   user?: Maybe<UserType>;
   validatePassword?: Maybe<CustomIdentityResultType>;
   wishlist?: Maybe<WishlistType>;
@@ -3646,6 +3703,20 @@ export type QueryPropertyArgs = {
 };
 
 
+export type QueryQuoteArgs = {
+  id: Scalars['String'];
+};
+
+
+export type QueryQuotesArgs = {
+  after?: InputMaybe<Scalars['String']>;
+  customerId?: InputMaybe<Scalars['String']>;
+  first?: InputMaybe<Scalars['Int']>;
+  keyword?: InputMaybe<Scalars['String']>;
+  sort?: InputMaybe<Scalars['String']>;
+};
+
+
 export type QueryRegionsArgs = {
   countryId: Scalars['String'];
 };
@@ -3659,6 +3730,20 @@ export type QueryRequestPasswordResetArgs = {
 
 export type QueryRoleArgs = {
   roleName: Scalars['String'];
+};
+
+
+export type QueryTasksArgs = {
+  after?: InputMaybe<Scalars['String']>;
+  completed?: InputMaybe<Scalars['Boolean']>;
+  endDueDate?: InputMaybe<Scalars['DateTime']>;
+  first?: InputMaybe<Scalars['Int']>;
+  isActive?: InputMaybe<Scalars['Boolean']>;
+  keyword?: InputMaybe<Scalars['String']>;
+  responsibleName?: InputMaybe<Scalars['String']>;
+  sort?: InputMaybe<Scalars['String']>;
+  startDueDate?: InputMaybe<Scalars['DateTime']>;
+  storeId?: InputMaybe<Scalars['String']>;
 };
 
 
@@ -3689,6 +3774,151 @@ export type QueryWishlistsArgs = {
   sort?: InputMaybe<Scalars['String']>;
   storeId?: InputMaybe<Scalars['String']>;
   userId?: InputMaybe<Scalars['String']>;
+};
+
+export type QuoteAddressType = {
+  addressType?: Maybe<Scalars['Int']>;
+  city: Scalars['String'];
+  countryCode?: Maybe<Scalars['String']>;
+  countryName: Scalars['String'];
+  email?: Maybe<Scalars['String']>;
+  firstName: Scalars['String'];
+  id: Scalars['String'];
+  key?: Maybe<Scalars['String']>;
+  lastName: Scalars['String'];
+  line1?: Maybe<Scalars['String']>;
+  line2?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
+  /** Company name */
+  organization?: Maybe<Scalars['String']>;
+  outerId?: Maybe<Scalars['String']>;
+  phone?: Maybe<Scalars['String']>;
+  postalCode?: Maybe<Scalars['String']>;
+  regionId?: Maybe<Scalars['String']>;
+  regionName?: Maybe<Scalars['String']>;
+};
+
+export type QuoteAttachmentType = {
+  mimeType?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
+  size: Scalars['Long'];
+  url: Scalars['String'];
+};
+
+/** A connection from an object to a list of objects of type `Quote`. */
+export type QuoteConnection = {
+  /** A list of all of the edges returned in the connection. */
+  edges?: Maybe<Array<Maybe<QuoteEdge>>>;
+  /** A list of all of the objects returned in the connection. This is a convenience field provided for quickly exploring the API; rather than querying for "{ edges { node } }" when no edge data is needed, this field can be used instead. Note that when clients like Relay need to fetch the "cursor" field on the edge to enable efficient pagination, this shortcut cannot be used, and the full "{ edges { node } } " version should be used instead. */
+  items?: Maybe<Array<Maybe<QuoteType>>>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** A count of the total number of objects in this connection, ignoring pagination. This allows a client to fetch the first five objects by passing "5" as the argument to `first`, then fetch the total count so it could display "5 of 83", for example. In cases where we employ infinite scrolling or don't have an exact count of entries, this field will return `null`. */
+  totalCount?: Maybe<Scalars['Int']>;
+};
+
+/** An edge in a connection from an object to another object of type `Quote`. */
+export type QuoteEdge = {
+  /** A cursor for use in pagination */
+  cursor: Scalars['String'];
+  /** The item at the end of the edge */
+  node?: Maybe<QuoteType>;
+};
+
+export type QuoteItemType = {
+  catalogId: Scalars['String'];
+  categoryId?: Maybe<Scalars['String']>;
+  comment?: Maybe<Scalars['String']>;
+  imageUrl?: Maybe<Scalars['String']>;
+  listPrice?: Maybe<MoneyType>;
+  name: Scalars['String'];
+  product?: Maybe<Product>;
+  productId: Scalars['String'];
+  proposalPrices?: Maybe<Array<Maybe<QuoteTierPriceType>>>;
+  salePrice?: Maybe<MoneyType>;
+  selectedTierPrice?: Maybe<QuoteTierPriceType>;
+  sku: Scalars['String'];
+  taxType?: Maybe<Scalars['String']>;
+};
+
+export type QuoteShipmentMethodType = {
+  currency?: Maybe<CurrencyType>;
+  logoUrl?: Maybe<Scalars['String']>;
+  optionName?: Maybe<Scalars['String']>;
+  price?: Maybe<MoneyType>;
+  shipmentMethodCode?: Maybe<Scalars['String']>;
+  typeName?: Maybe<Scalars['String']>;
+};
+
+export type QuoteTaxDetailType = {
+  amount?: Maybe<MoneyType>;
+  name?: Maybe<Scalars['String']>;
+  rate?: Maybe<MoneyType>;
+};
+
+export type QuoteTierPriceType = {
+  price?: Maybe<MoneyType>;
+  quantity: Scalars['Long'];
+};
+
+export type QuoteTotalsType = {
+  adjustmentQuoteExlTax?: Maybe<MoneyType>;
+  discountTotal?: Maybe<MoneyType>;
+  grandTotalExlTax?: Maybe<MoneyType>;
+  grandTotalInclTax?: Maybe<MoneyType>;
+  originalSubTotalExlTax?: Maybe<MoneyType>;
+  shippingTotal?: Maybe<MoneyType>;
+  subTotalExlTax?: Maybe<MoneyType>;
+  taxTotal?: Maybe<MoneyType>;
+};
+
+export type QuoteType = {
+  addresses?: Maybe<Array<Maybe<QuoteAddressType>>>;
+  attachments?: Maybe<Array<Maybe<QuoteAttachmentType>>>;
+  cancelReason?: Maybe<Scalars['String']>;
+  cancelledDate?: Maybe<Scalars['DateTime']>;
+  channelId?: Maybe<Scalars['String']>;
+  comment?: Maybe<Scalars['String']>;
+  coupon?: Maybe<Scalars['String']>;
+  createdBy?: Maybe<Scalars['String']>;
+  createdDate: Scalars['DateTime'];
+  currency?: Maybe<CurrencyType>;
+  customerId?: Maybe<Scalars['String']>;
+  customerName?: Maybe<Scalars['String']>;
+  /** Quote dynamic property values */
+  dynamicProperties?: Maybe<Array<Maybe<DynamicPropertyValueType>>>;
+  employeeId?: Maybe<Scalars['String']>;
+  employeeName?: Maybe<Scalars['String']>;
+  enableNotification: Scalars['Boolean'];
+  expirationDate?: Maybe<Scalars['DateTime']>;
+  id: Scalars['String'];
+  innerComment?: Maybe<Scalars['String']>;
+  isAnonymous: Scalars['Boolean'];
+  isCancelled: Scalars['Boolean'];
+  isLocked: Scalars['Boolean'];
+  items?: Maybe<Array<Maybe<QuoteItemType>>>;
+  languageCode?: Maybe<Scalars['String']>;
+  manualRelDiscountAmount?: Maybe<MoneyType>;
+  manualShippingTotal?: Maybe<MoneyType>;
+  manualSubTotal?: Maybe<MoneyType>;
+  modifiedBy?: Maybe<Scalars['String']>;
+  modifiedDate?: Maybe<Scalars['DateTime']>;
+  number: Scalars['String'];
+  objectType?: Maybe<Scalars['String']>;
+  organizationId?: Maybe<Scalars['String']>;
+  organizationName?: Maybe<Scalars['String']>;
+  reminderDate?: Maybe<Scalars['DateTime']>;
+  shipmentMethod?: Maybe<QuoteShipmentMethodType>;
+  status?: Maybe<Scalars['String']>;
+  storeId: Scalars['String'];
+  tag?: Maybe<Scalars['String']>;
+  taxDetails?: Maybe<Array<Maybe<QuoteTaxDetailType>>>;
+  totals?: Maybe<QuoteTotalsType>;
+};
+
+
+export type QuoteTypeDynamicPropertiesArgs = {
+  cultureName?: InputMaybe<Scalars['String']>;
 };
 
 export type RangeFacet = Facet & {
@@ -3751,6 +3981,10 @@ export type RegistrationErrorType = {
   code?: Maybe<Scalars['String']>;
   description?: Maybe<Scalars['String']>;
   parameter?: Maybe<Scalars['String']>;
+};
+
+export type RejectTaskCommandType = {
+  id: Scalars['String'];
 };
 
 export type RequestRegistrationType = {
@@ -4073,6 +4307,43 @@ export type WishlistType = {
   storeId?: Maybe<Scalars['String']>;
 };
 
+/** A connection from an object to a list of objects of type `WorkTask`. */
+export type WorkTaskConnection = {
+  /** A list of all of the edges returned in the connection. */
+  edges?: Maybe<Array<Maybe<WorkTaskEdge>>>;
+  /** A list of all of the objects returned in the connection. This is a convenience field provided for quickly exploring the API; rather than querying for "{ edges { node } }" when no edge data is needed, this field can be used instead. Note that when clients like Relay need to fetch the "cursor" field on the edge to enable efficient pagination, this shortcut cannot be used, and the full "{ edges { node } } " version should be used instead. */
+  items?: Maybe<Array<Maybe<WorkTaskType>>>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** A count of the total number of objects in this connection, ignoring pagination. This allows a client to fetch the first five objects by passing "5" as the argument to `first`, then fetch the total count so it could display "5 of 83", for example. In cases where we employ infinite scrolling or don't have an exact count of entries, this field will return `null`. */
+  totalCount?: Maybe<Scalars['Int']>;
+};
+
+/** An edge in a connection from an object to another object of type `WorkTask`. */
+export type WorkTaskEdge = {
+  /** A cursor for use in pagination */
+  cursor: Scalars['String'];
+  /** The item at the end of the edge */
+  node?: Maybe<WorkTaskType>;
+};
+
+export type WorkTaskType = {
+  completed?: Maybe<Scalars['Boolean']>;
+  createdBy?: Maybe<Scalars['String']>;
+  createdDate: Scalars['DateTime'];
+  description?: Maybe<Scalars['String']>;
+  dueDate?: Maybe<Scalars['DateTime']>;
+  id: Scalars['String'];
+  isActive: Scalars['Boolean'];
+  modifiedBy?: Maybe<Scalars['String']>;
+  modifiedDate?: Maybe<Scalars['DateTime']>;
+  priority?: Maybe<Scalars['Int']>;
+  responsibleName?: Maybe<Scalars['String']>;
+  storeId?: Maybe<Scalars['String']>;
+  type?: Maybe<Scalars['String']>;
+  workflowId?: Maybe<Scalars['String']>;
+};
+
 export type AddWishlistMutationVariables = Exact<{
   command: InputCreateWishlistType;
 }>;
@@ -4141,7 +4412,7 @@ export type RegisterByInvitationMutationVariables = Exact<{
 }>;
 
 
-export type RegisterByInvitationMutation = { registerByInvitation?: { succeeded: boolean, errors?: Array<{ code: string, description?: string, errorParameter?: number }> } };
+export type RegisterByInvitationMutation = { registerByInvitation?: { succeeded: boolean, errors?: Array<{ code: string, description?: string, parameter?: string }> } };
 
 export type RenameWishlistMutationVariables = Exact<{
   command: InputRenameWishlistType;
@@ -4439,6 +4710,7 @@ export type CategoriesQueryVariables = Exact<{
   after?: InputMaybe<Scalars['String']>;
   first?: InputMaybe<Scalars['Int']>;
   filter?: InputMaybe<Scalars['String']>;
+  sort?: InputMaybe<Scalars['String']>;
 }>;
 
 

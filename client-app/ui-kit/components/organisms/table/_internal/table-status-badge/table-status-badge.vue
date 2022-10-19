@@ -14,12 +14,16 @@ const props = defineProps({
 const newStatusClass = "bg-green-500 text-white";
 const processingStatusClass = "border border-green-500 text-green-500";
 const pandingStatusCalss = "border border-blue-400 text-blue-400";
+const doneTaskStatusClass = "bg-green-500 text-white";
+const rejectedTaskStatusClass = "bg-red-500 text-white";
 
 const badgeClass = computed(() => {
   return {
     [newStatusClass]: props.status === "New",
     [processingStatusClass]: props.status === "Processing",
     [pandingStatusCalss]: props.status === "Pending",
+    [doneTaskStatusClass]: props.status === "Done",
+    [rejectedTaskStatusClass]: props.status === "Rejected",
   };
 });
 </script>

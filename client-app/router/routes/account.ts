@@ -9,6 +9,7 @@ const OrderPayment = () => import("@/pages/account/order-payment.vue");
 const Lists = () => import("@/pages/account/lists.vue");
 const ListDetails = () => import("@/pages/account/list-details.vue");
 const CheckoutDefaults = () => import("@/pages/account/checkout-defaults.vue");
+const Tasks = () => import("@/pages/account/tasks.vue");
 
 export const accountRoutes: RouteRecordRaw[] = [
   { path: "dashboard", name: "Dashboard", component: Dashboard },
@@ -54,4 +55,5 @@ export const accountRoutes: RouteRecordRaw[] = [
     ],
   },
   { path: "checkout-defaults", name: "CheckoutDefaults", component: CheckoutDefaults },
+  { path: "tasks", name: "Tasks", component: Tasks },
 ];

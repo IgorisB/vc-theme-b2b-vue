@@ -91,7 +91,8 @@
       "list_details": "List Details",
       "cart": "Cart",
       "company_info": "Company Info",
-      "company_members": "Company Members"
+      "company_members": "Company Members",
+      "tasks": "Tasks"
     },
     "titles": {
       "all_actions": "All actions"
@@ -140,7 +141,8 @@
             "addresses": "@:common.links.addresses",
             "orders": "@:common.links.orders",
             "lists": "@:common.links.lists",
-            "checkout_defaults": "@:common.links.checkout_defaults"
+            "checkout_defaults": "@:common.links.checkout_defaults",
+            "tasks": "@:common.links.tasks"
           },
           "corporate": "@:shared.account.navigation.corporate_title",
           "corporate_menu": {
@@ -212,7 +214,8 @@
           "list_details": "@:common.links.list_details",
           "checkout_defaults": "@:common.links.checkout_defaults",
           "company_info": "@:common.links.company_info",
-          "company_members": "@:common.links.company_members"
+          "company_members": "@:common.links.company_members",
+          "tasks": "@:common.links.tasks"
         }
       },
       "address_form": {
@@ -951,6 +954,14 @@
           "passwords_do_not_match": "Passwords do not match",
           "password_new_same_old": "Your current password and new password must be different"
         }
+      },
+      "tasks": {
+        "title": "@:common.links.tasks",
+        "description_label": "Description",
+        "created_date_label": "Created date",
+        "due_date_label": "Due date",
+        "status_label": "@:common.labels.status",
+        "actions_label": "@:common.labels.actions"
       }
     },
     "company": {

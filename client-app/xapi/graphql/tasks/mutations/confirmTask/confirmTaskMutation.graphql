@@ -1,0 +1,5 @@
+mutation ConfirmTask($command: ConfirmTaskCommandType!) {
+  confirmTask(command: $command) {
+    id
+  }
+}

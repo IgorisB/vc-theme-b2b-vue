@@ -5,7 +5,7 @@ export default function useIdentityErrorTranslator() {
   const { t } = useI18n();
 
   return (error: IdentityErrorType | IdentityErrorInfoType | RegistrationErrorType): string | undefined => {
-    const parameter = (error as RegistrationErrorType).parameter || (error as IdentityErrorInfoType).errorParameter;
+    const parameter = (error as RegistrationErrorType).parameter;
     const translationKey = "identity_error." + error.code;
     const translationResult = t(translationKey, [parameter]);
     return translationResult !== translationKey ? translationResult : error.description;

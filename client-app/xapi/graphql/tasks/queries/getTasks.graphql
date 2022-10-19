@@ -1,0 +1,15 @@
+query GetTasks($storeId: String, $sort: String, $responsibleName: String, $after: String, $first: Int) {
+  tasks(storeId: $storeId, responsibleName: $responsibleName, sort: $sort, after: $after, first: $first) {
+    totalCount
+    items {
+      id
+      description
+      completed
+      isActive
+      priority
+      type
+      createdDate
+      dueDate
+    }
+  }
+}

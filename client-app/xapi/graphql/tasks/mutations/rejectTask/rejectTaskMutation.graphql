@@ -1,0 +1,5 @@
+mutation RejectTask($command: RejectTaskCommandType!) {
+  rejectTask(command: $command) {
+    id
+  }
+}

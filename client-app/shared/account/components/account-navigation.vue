@@ -50,6 +50,12 @@
         :text="$t('shared.account.navigation.links.checkout_defaults')"
         class="checkout-icon"
       />
+
+      <AccountNavigationLink
+        :to="{ name: 'Tasks' }"
+        :text="$t('shared.account.navigation.links.tasks')"
+        class="tasks-icon pb-2"
+      />
     </div>
   </VcCard>
 
