@@ -10,6 +10,7 @@ query GetTasks($storeId: String, $sort: String, $responsibleName: String, $after
       type
       createdDate
       dueDate
+      parameters
     }
   }
 }

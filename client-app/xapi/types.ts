@@ -4337,6 +4337,7 @@ export type WorkTaskType = {
   isActive: Scalars['Boolean'];
   modifiedBy?: Maybe<Scalars['String']>;
   modifiedDate?: Maybe<Scalars['DateTime']>;
+  parameters?: Maybe<Scalars['String']>;
   priority?: Maybe<Scalars['Int']>;
   responsibleName?: Maybe<Scalars['String']>;
   storeId?: Maybe<Scalars['String']>;
@@ -4861,3 +4862,28 @@ export type GetOrganizationContactsQueryVariables = Exact<{
 
 
 export type GetOrganizationContactsQuery = { organization?: { contacts?: { totalCount?: number, items?: Array<{ id: string, name?: string, firstName: string, lastName: string, fullName: string, emails?: Array<string>, status?: string, securityAccounts?: Array<{ email?: string, roles?: Array<{ id: string, name: string }> }> }> } } };
+
+export type ConfirmTaskMutationVariables = Exact<{
+  command: ConfirmTaskCommandType;
+}>;
+
+
+export type ConfirmTaskMutation = { confirmTask?: { id: string } };
+
+export type RejectTaskMutationVariables = Exact<{
+  command: RejectTaskCommandType;
+}>;
+
+
+export type RejectTaskMutation = { rejectTask?: { id: string } };
+
+export type GetTasksQueryVariables = Exact<{
+  storeId?: InputMaybe<Scalars['String']>;
+  sort?: InputMaybe<Scalars['String']>;
+  responsibleName?: InputMaybe<Scalars['String']>;
+  after?: InputMaybe<Scalars['String']>;
+  first?: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type GetTasksQuery = { tasks?: { totalCount?: number, items?: Array<{ id: string, description?: string, completed?: boolean, isActive: boolean, priority?: number, type?: string, createdDate: any, dueDate?: any }> } };

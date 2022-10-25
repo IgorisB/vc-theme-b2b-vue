@@ -89,7 +89,12 @@
         </template>
 
         <template #desktop-body>
-          <tr v-for="task in tasks" :key="task.id" class="even:bg-gray-50 hover:bg-gray-200 cursor-pointer">
+          <tr
+            v-for="task in tasks"
+            :key="task.id"
+            class="even:bg-gray-50 hover:bg-gray-200 cursor-pointer"
+            @click="goToQuote(task)"
+          >
             <td class="p-5 overflow-hidden overflow-ellipsis">
               {{ task.description }}
             </td>
@@ -119,6 +124,7 @@
                 </button>
 
                 <button
+                  v-if="task.type === 'ApproveReject'"
                   type="button"
                   class="h-7 w-7 shadow rounded text-[color:var(--color-danger)] hover:bg-gray-100"
                   @click="rejectTask(task.id)"
@@ -227,6 +233,14 @@ async function applySorting(column: string) {
 
 function calculateTaskStatus(task: WorkTaskType) {
   return task.isActive === true ? "Processing" : task.completed === true ? "Done" : "Rejected";
+}
+
+function goToQuote(task: WorkTaskType) {
+  if (task.parameters) {
+    console.log(JSON.parse(task.parameters));
+  } else {
+    console.log(task.parameters);
+  }
 }
 
 async function approveTask(id: string) {
