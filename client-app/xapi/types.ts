@@ -1,4 +1,5 @@
-// This file was generated based on "graphql.codegen.yml". Do not edit manually.
+// This file was generated based on "codegen.types.ts". Do not edit manually.
+
 /* eslint-disable */
 
 export type Maybe<T> = T;
@@ -13,9 +14,7 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
-  /** The `Date` scalar type represents a year, month and day in accordance with the [ISO-8601](https://en.wikipedia.org/wiki/ISO_8601) standard. */
   Date: any;
-  /** The `DateTime` scalar type represents a date and time. `DateTime` expects timestamps to be formatted in accordance with the [ISO-8601](https://en.wikipedia.org/wiki/ISO_8601) standard. */
   DateTime: any;
   Decimal: any;
   DynamicPropertyValue: any;
@@ -1239,6 +1238,13 @@ export type InputChangeOrderStatusType = {
   status: Scalars['String'];
 };
 
+export type InputChangeOrganizationContactRoleType = {
+  /** Role IDs or names to be assigned to the user */
+  roleIds?: InputMaybe<Array<Scalars['String']>>;
+  /** User identifier to be changed */
+  userId?: InputMaybe<Scalars['String']>;
+};
+
 export type InputChangePurchaseOrderNumber = {
   cartId?: InputMaybe<Scalars['String']>;
   cartName?: InputMaybe<Scalars['String']>;
@@ -2267,6 +2273,7 @@ export type Mutations = {
   changeCartItemQuantity?: Maybe<CartType>;
   changeComment?: Maybe<CartType>;
   changeOrderStatus?: Maybe<Scalars['Boolean']>;
+  changeOrganizationContactRole?: Maybe<CustomIdentityResultType>;
   changePurchaseOrderNumber?: Maybe<CartType>;
   clearCart?: Maybe<CartType>;
   clearPayments?: Maybe<CartType>;
@@ -2410,6 +2417,11 @@ export type MutationsChangeCommentArgs = {
 
 export type MutationsChangeOrderStatusArgs = {
   command: InputChangeOrderStatusType;
+};
+
+
+export type MutationsChangeOrganizationContactRoleArgs = {
+  command: InputChangeOrganizationContactRoleType;
 };
 
 
@@ -3708,12 +3720,24 @@ export type QueryQuoteArgs = {
 };
 
 
+export type QueryQuoteArgs = {
+  cultureName?: InputMaybe<Scalars['String']>;
+  currencyCode?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['String']>;
+  storeId?: InputMaybe<Scalars['String']>;
+  userId?: InputMaybe<Scalars['String']>;
+};
+
+
 export type QueryQuotesArgs = {
   after?: InputMaybe<Scalars['String']>;
-  customerId?: InputMaybe<Scalars['String']>;
+  cultureName?: InputMaybe<Scalars['String']>;
+  currencyCode?: InputMaybe<Scalars['String']>;
   first?: InputMaybe<Scalars['Int']>;
   keyword?: InputMaybe<Scalars['String']>;
   sort?: InputMaybe<Scalars['String']>;
+  storeId?: InputMaybe<Scalars['String']>;
+  userId?: InputMaybe<Scalars['String']>;
 };
 
 
@@ -4160,6 +4184,7 @@ export type UserType = {
   modifiedDate?: Maybe<Scalars['DateTime']>;
   normalizedEmail?: Maybe<Scalars['String']>;
   normalizedUserName?: Maybe<Scalars['String']>;
+  operator?: Maybe<UserType>;
   passwordExpired: Scalars['Boolean'];
   /** Account permissions */
   permissions?: Maybe<Array<Maybe<Scalars['String']>>>;
@@ -4399,7 +4424,7 @@ export type InviteUserMutationVariables = Exact<{
 }>;
 
 
-export type InviteUserMutation = { inviteUser?: { succeeded: boolean, errors?: Array<{ code: string, description?: string }> } };
+export type InviteUserMutation = { inviteUser?: { succeeded: boolean, errors?: Array<{ code: string, description?: string, parameter?: string }> } };
 
 export type RequestRegistrationMutationVariables = Exact<{
   command: InputRequestRegistrationType;
@@ -4427,7 +4452,7 @@ export type ResetPasswordByTokenMutationVariables = Exact<{
 }>;
 
 
-export type ResetPasswordByTokenMutation = { resetPasswordByToken?: { succeeded: boolean, errors?: Array<{ code: string, description?: string }> } };
+export type ResetPasswordByTokenMutation = { resetPasswordByToken?: { succeeded: boolean, errors?: Array<{ code: string, description?: string, parameter?: string }> } };
 
 export type UpdateContactMutationVariables = Exact<{
   command: InputUpdateContactType;
@@ -4476,7 +4501,7 @@ export type GetMeQueryVariables = Exact<{
 }>;
 
 
-export type GetMeQuery = { me?: { id: string, memberId?: string, userName: string, email?: string, emailConfirmed: boolean, photoUrl?: string, phoneNumber?: string, permissions?: Array<string>, isAdministrator: boolean, contact?: { firstName: string, lastName: string, fullName: string, organizationId?: string, organizations?: { items?: Array<{ id: string, name?: string }> } } } };
+export type GetMeQuery = { me?: { id: string, memberId?: string, userName: string, email?: string, emailConfirmed: boolean, photoUrl?: string, phoneNumber?: string, permissions?: Array<string>, isAdministrator: boolean, contact?: { firstName: string, lastName: string, fullName: string, organizationId?: string, organizations?: { items?: Array<{ id: string, name?: string }> } }, operator?: { userName: string, contact?: { fullName: string } } } };
 
 export type GetMyAddressesQueryVariables = Exact<{
   after?: InputMaybe<Scalars['String']>;
@@ -4641,26 +4666,6 @@ export type ValidateCouponMutationVariables = Exact<{
 
 export type ValidateCouponMutation = { validateCoupon?: boolean };
 
-export type GetAvailPaymentMethodsQueryVariables = Exact<{
-  storeId: Scalars['String'];
-  userId: Scalars['String'];
-  currencyCode: Scalars['String'];
-  cultureName?: InputMaybe<Scalars['String']>;
-}>;
-
-
-export type GetAvailPaymentMethodsQuery = { cart?: { availablePaymentMethods?: Array<{ code?: string, logoUrl?: string, price?: { amount: any, decimalDigits: number, formattedAmount: string, formattedAmountWithoutCurrency: string, formattedAmountWithoutPoint: string, formattedAmountWithoutPointAndCurrency: string, currency?: { code: string, customFormatting?: string, exchangeRate?: any, symbol?: string } } }> } };
-
-export type GetAvailShippingMethodsQueryVariables = Exact<{
-  storeId: Scalars['String'];
-  userId: Scalars['String'];
-  currencyCode: Scalars['String'];
-  cultureName?: InputMaybe<Scalars['String']>;
-}>;
-
-
-export type GetAvailShippingMethodsQuery = { cart?: { availableShippingMethods?: Array<{ id?: string, code?: string, logoUrl?: string, optionName?: string, price?: { amount: any, decimalDigits: number, formattedAmount: string, formattedAmountWithoutCurrency: string, formattedAmountWithoutPoint: string, formattedAmountWithoutPointAndCurrency: string, currency?: { code: string, customFormatting?: string, exchangeRate?: any, symbol?: string } } }> } };
-
 export type GetMyCartQueryVariables = Exact<{
   storeId: Scalars['String'];
   userId: Scalars['String'];
@@ -4679,7 +4684,7 @@ export type GetProductQueryVariables = Exact<{
 }>;
 
 
-export type GetProductQuery = { product?: { name: string, id: string, code: string, slug?: string, outline?: string, minQuantity?: number, maxQuantity?: number, imgSrc?: string, images?: Array<{ url?: string }>, breadcrumbs?: Array<{ itemId: string, typeName?: string, title: string, seoPath?: string }>, description?: { content?: string, id?: string }, descriptions?: Array<{ content?: string, id?: string }>, properties?: Array<{ name: string, value?: any, type?: string, hidden: boolean, valueType?: string, label?: string }>, variations?: Array<{ id?: string, name?: string, minQuantity?: number, maxQuantity?: number, code?: string, images?: Array<{ url?: string }>, properties?: Array<{ name: string, value?: any, type?: string }>, availabilityData?: { isActive?: boolean, isAvailable?: boolean, isBuyable?: boolean, isInStock?: boolean, availableQuantity: any }, price?: { actual?: { amount: any, formattedAmount: string }, discountAmount?: { amount: any, formattedAmount: string }, sale?: { amount: any, formattedAmount: string }, list?: { amount: any, formattedAmount: string } } }>, availabilityData?: { isActive?: boolean, isAvailable?: boolean, isBuyable?: boolean, isInStock?: boolean, availableQuantity: any }, price?: { discountPercent?: any, actual?: { amount: any, formattedAmount: string }, discountAmount?: { amount: any, formattedAmount: string }, sale?: { amount: any, formattedAmount: string }, list?: { amount: any, formattedAmount: string } }, seoInfo?: { pageTitle?: string, metaKeywords?: string, metaDescription?: string } } };
+export type GetProductQuery = { product?: { name: string, id: string, code: string, slug?: string, outline?: string, hasVariations?: boolean, minQuantity?: number, maxQuantity?: number, imgSrc?: string, images?: Array<{ url?: string }>, breadcrumbs?: Array<{ itemId: string, typeName?: string, title: string, seoPath?: string }>, description?: { content?: string, id?: string }, descriptions?: Array<{ content?: string, id?: string }>, properties?: Array<{ name: string, value?: any, type?: string, hidden: boolean, valueType?: string, label?: string }>, variations?: Array<{ id?: string, name?: string, minQuantity?: number, maxQuantity?: number, code?: string, images?: Array<{ url?: string }>, properties?: Array<{ name: string, value?: any, type?: string }>, vendor?: { id: string, name: string }, availabilityData?: { isActive?: boolean, isAvailable?: boolean, isBuyable?: boolean, isInStock?: boolean, availableQuantity: any }, price?: { actual?: { amount: any, formattedAmount: string }, discountAmount?: { amount: any, formattedAmount: string }, sale?: { amount: any, formattedAmount: string }, list?: { amount: any, formattedAmount: string } } }>, vendor?: { id: string, name: string }, availabilityData?: { isActive?: boolean, isAvailable?: boolean, isBuyable?: boolean, isInStock?: boolean, availableQuantity: any }, price?: { discountPercent?: any, actual?: { amount: any, formattedAmount: string }, discountAmount?: { amount: any, formattedAmount: string }, sale?: { amount: any, formattedAmount: string }, list?: { amount: any, formattedAmount: string } }, seoInfo?: { pageTitle?: string, metaKeywords?: string, metaDescription?: string } } };
 
 export type GetSearchResultsQueryVariables = Exact<{
   storeId: Scalars['String'];
@@ -4715,7 +4720,7 @@ export type CategoriesQueryVariables = Exact<{
 }>;
 
 
-export type CategoriesQuery = { categories?: { totalCount?: number, items?: Array<{ id: string, name: string, code: string, slug?: string, outline?: string, parent?: { id: string }, seoInfo?: { pageTitle?: string, metaKeywords?: string, metaDescription?: string, semanticUrl?: string }, breadcrumbs?: Array<{ title: string, seoPath?: string }> }> } };
+export type CategoriesQuery = { categories?: { totalCount?: number, items?: Array<{ id: string, name: string, slug?: string, parent?: { id: string }, seoInfo?: { pageTitle?: string, metaKeywords?: string, metaDescription?: string }, breadcrumbs?: Array<{ title: string, seoPath?: string }> }> } };
 
 export type SearchProductsQueryVariables = Exact<{
   storeId: Scalars['String'];
@@ -4833,6 +4838,27 @@ export type GetOrdersQueryVariables = Exact<{
 
 export type GetOrdersQuery = { orders?: { totalCount?: number, items?: Array<{ id: string, createdDate: any, status?: string, number: string, customerId: string, purchaseOrderNumber?: string, currency?: { code: string }, total?: { amount: any, decimalDigits: number, formattedAmount: string, formattedAmountWithoutCurrency: string, formattedAmountWithoutPoint: string, formattedAmountWithoutPointAndCurrency: string, currency?: { code: string, customFormatting?: string, exchangeRate?: any, symbol?: string } }, inPayments: Array<{ number: string }> }> } };
 
+export type LockOrganizationContactMutationVariables = Exact<{
+  command: InputLockUnlockOrganizationContactType;
+}>;
+
+
+export type LockOrganizationContactMutation = { lockOrganizationContact?: { id: string } };
+
+export type RemoveMemberFromOrganizationMutationVariables = Exact<{
+  command: InputRemoveMemberFromOrganizationType;
+}>;
+
+
+export type RemoveMemberFromOrganizationMutation = { removeMemberFromOrganization?: { id: string } };
+
+export type UnlockOrganizationContactMutationVariables = Exact<{
+  command: InputLockUnlockOrganizationContactType;
+}>;
+
+
+export type UnlockOrganizationContactMutation = { unlockOrganizationContact?: { id: string } };
+
 export type UpdateOrganizationMutationVariables = Exact<{
   command: InputUpdateOrganizationType;
 }>;
@@ -4863,27 +4889,23 @@ export type GetOrganizationContactsQueryVariables = Exact<{
 
 export type GetOrganizationContactsQuery = { organization?: { contacts?: { totalCount?: number, items?: Array<{ id: string, name?: string, firstName: string, lastName: string, fullName: string, emails?: Array<string>, status?: string, securityAccounts?: Array<{ email?: string, roles?: Array<{ id: string, name: string }> }> }> } } };
 
-export type ConfirmTaskMutationVariables = Exact<{
-  command: ConfirmTaskCommandType;
+export type CreateQuoteFromCartMutationVariables = Exact<{
+  command: CreateQuoteFromCartCommandType;
 }>;
 
 
-export type ConfirmTaskMutation = { confirmTask?: { id: string } };
+export type CreateQuoteFromCartMutation = { createQuoteFromCart?: { id: string } };
 
-export type RejectTaskMutationVariables = Exact<{
-  command: RejectTaskCommandType;
-}>;
-
-
-export type RejectTaskMutation = { rejectTask?: { id: string } };
-
-export type GetTasksQueryVariables = Exact<{
+export type GetQuotesQueryVariables = Exact<{
   storeId?: InputMaybe<Scalars['String']>;
+  cultureName?: InputMaybe<Scalars['String']>;
+  currencyCode?: InputMaybe<Scalars['String']>;
+  userId?: InputMaybe<Scalars['String']>;
   sort?: InputMaybe<Scalars['String']>;
-  responsibleName?: InputMaybe<Scalars['String']>;
-  after?: InputMaybe<Scalars['String']>;
+  keyword?: InputMaybe<Scalars['String']>;
   first?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']>;
 }>;
 
 
-export type GetTasksQuery = { tasks?: { totalCount?: number, items?: Array<{ id: string, description?: string, completed?: boolean, isActive: boolean, priority?: number, type?: string, createdDate: any, dueDate?: any }> } };
+export type GetQuotesQuery = { quotes?: { totalCount?: number, items?: Array<{ id: string, createdDate: any, customerId?: string, number: string, status?: string, totals?: { grandTotalInclTax?: { amount: any, decimalDigits: number, formattedAmount: string, formattedAmountWithoutCurrency: string, formattedAmountWithoutPoint: string, formattedAmountWithoutPointAndCurrency: string, currency?: { code: string, customFormatting?: string, exchangeRate?: any, symbol?: string } } } }> } };

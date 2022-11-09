@@ -52,6 +52,13 @@
       />
 
       <AccountNavigationLink
+        :to="{ name: 'Quotes' }"
+        :text="$t('shared.account.navigation.links.quote_requests')"
+        class="quotes-icon"
+        v-if="$cfg.quotes_enabled"
+      />
+
+      <AccountNavigationLink
         :to="{ name: 'Tasks' }"
         :text="$t('shared.account.navigation.links.tasks')"
         class="tasks-icon pb-2"

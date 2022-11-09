@@ -2,8 +2,10 @@
   <ThankYou v-if="showThankYouStep" :order="placedOrder!" />
 
   <template v-else>
+    <VcLoaderOverlay v-if="!preparedData" no-bg />
+
     <VcEmptyPage
-      v-if="!cart.items?.length && !creatingOrder && !loading"
+      v-else-if="!cart.items?.length"
       :title="$t('shared.checkout.empty_cart.title')"
       :description="$t('shared.checkout.empty_cart.description')"
       image="/static/images/errors/emptyCart.webp"
@@ -38,11 +40,11 @@
 
           <div>
             <VcButton
-              :is-disabled="!isValidCheckout"
+              :is-disabled="!isValidCheckout || loading || creatingQuote"
               :is-waiting="creatingOrder"
               size="sm"
               class="uppercase px-3"
-              @click="placeOrder"
+              @click="createOrder"
             >
               {{ $t("pages.checkout.order_summary_block.place_order_button") }}
             </VcButton>
@@ -73,7 +75,7 @@
                     </h3>
 
                     <VcButton
-                      :is-disabled="creatingOrder"
+                      :is-disabled="creatingOrder || creatingQuote"
                       size="sm"
                       kind="secondary"
                       is-outline
@@ -92,7 +94,7 @@
                   v-for="item in cartItems"
                   :key="item?.id"
                   :line-item="item"
-                  :read-only="creatingOrder"
+                  :read-only="creatingOrder || creatingQuote"
                   @update:quantity="changeItemQuantity"
                   @remove:item="removeItem"
                   :validation-error="getItemValidationError(item?.id)"
@@ -120,7 +122,7 @@
                   <VcCheckbox
                     class="mr-7"
                     :model-value="checkGift(gift)"
-                    :disabled="creatingOrder"
+                    :disabled="creatingOrder || creatingQuote"
                     @change="toggleGift($event, gift)"
                   />
 
@@ -176,7 +178,7 @@
 
                     <div>
                       <VcButton
-                        :is-disabled="creatingOrder"
+                        :is-disabled="creatingOrder || creatingQuote"
                         size="sm"
                         is-outline
                         class="px-3 self-start uppercase font-bold"
@@ -247,7 +249,7 @@
 
                   <div>
                     <VcButton
-                      :is-disabled="creatingOrder"
+                      :is-disabled="creatingOrder || creatingQuote"
                       size="sm"
                       is-outline
                       class="px-3 self-start uppercase font-bold"
@@ -274,7 +276,7 @@
                 <CheckoutLabeledBlock :label="$t('pages.checkout.payment_details_section.billing_address_block.title')">
                   <label class="flex items-center text-sm cursor-pointer">
                     <input
-                      :disabled="creatingOrder"
+                      :disabled="creatingOrder || creatingQuote"
                       v-model="billingSameAsShipping"
                       type="checkbox"
                       class="form-tick appearance-none w-5 h-5 border-2 border-gray-300 rounded-sm checked:bg-[color:var(--color-primary)] checked:border-transparent focus:outline-none cursor-pointer"
@@ -362,7 +364,7 @@
 
                   <div>
                     <VcButton
-                      :is-disabled="creatingOrder"
+                      :is-disabled="creatingOrder || creatingQuote"
                       size="sm"
                       is-outline
                       class="px-3 self-start uppercase font-bold"
@@ -393,7 +395,7 @@
 
                   <div>
                     <VcButton
-                      :is-disabled="creatingOrder"
+                      :is-disabled="creatingOrder || creatingQuote"
                       size="sm"
                       is-outline
                       class="px-3 self-start uppercase font-bold"
@@ -422,7 +424,7 @@
 
                 <VcTextArea
                   v-model="cartComment"
-                  :is-disabled="creatingOrder"
+                  :is-disabled="creatingOrder || creatingQuote"
                   :max-length="1000"
                   :rows="4"
                   class="resize-none"
@@ -436,7 +438,7 @@
 
           <!-- Sidebar -->
           <div
-            class="flex flex-col px-5 mb-7 order-first md:px-0 lg:mb-6 lg:order-1 lg:w-1/4 lg:h-full lg:sticky lg:top-4"
+            class="flex flex-col gap-y-6 px-5 mb-7 order-first md:px-0 lg:mb-6 lg:order-1 lg:w-1/4 lg:h-full lg:sticky lg:top-4"
           >
             <!-- Order summary -->
             <OrderSummary :cart="cart">
@@ -449,7 +451,7 @@
                   :label="$t('pages.checkout.order_summary_block.purchase_order_label')"
                   :placeholder="$t('pages.checkout.order_summary_block.purchase_order_placeholder')"
                   :is-applied="purchaseOrderNumberApplied"
-                  :is-disabled="loading || creatingOrder"
+                  :is-disabled="creatingOrder || creatingQuote"
                   :max-length="128"
                   @click:apply="setPurchaseOrderNumber"
                   @click:deny="removePurchaseOrderNumber"
@@ -465,7 +467,7 @@
                   :placeholder="$t('pages.checkout.order_summary_block.promotion_code_placeholder')"
                   :is-applied="cartCouponApplied"
                   :error-message="couponValidationError"
-                  :is-disabled="loading || creatingOrder"
+                  :is-disabled="creatingOrder || creatingQuote"
                   @click:apply="useCoupon"
                   @click:deny="removeCoupon"
                   @update:model-value="couponValidationError = ''"
@@ -474,7 +476,7 @@
 
               <template #footer>
                 <p
-                  class="mt-8 mb-3 text-xs font-normal text-gray-400"
+                  class="mt-8 mb-5 text-xs font-normal text-gray-400"
                   v-t="'pages.checkout.order_summary_block.warning_message'"
                 ></p>
 
@@ -482,9 +484,9 @@
 
                 <VcButton
                   class="uppercase w-full"
-                  :is-disabled="!isValidCheckout"
+                  :is-disabled="!isValidCheckout || loading || creatingQuote"
                   :is-waiting="creatingOrder"
-                  @click="placeOrder"
+                  @click="createOrder"
                 >
                   {{ $t("pages.checkout.order_summary_block.place_order_button") }}
                 </VcButton>
@@ -498,6 +500,25 @@
                 </div>
               </template>
             </OrderSummary>
+
+            <VcCard
+              v-if="$cfg.quotes_enabled && isAuthenticated"
+              :title="$t('shared.checkout.quote.title')"
+              header-classes="px-6 py-3"
+              content-classes="px-6 pt-4 pb-5"
+            >
+              <p class="mb-5 text-xs font-normal text-gray-400" v-t="'shared.checkout.quote.text'" />
+
+              <VcButton
+                :is-disabled="loading || creatingOrder"
+                :is-waiting="creatingQuote"
+                class="w-full uppercase"
+                is-outline
+                @click="createQuote"
+              >
+                {{ $t("shared.checkout.quote.buttons.add_items_to_quote") }}
+              </VcButton>
+            </VcCard>
           </div>
         </div>
       </div>
@@ -507,23 +528,12 @@
 
 <script setup lang="ts">
 import { computed, onMounted, ref, shallowRef } from "vue";
+import { breakpointsTailwind, computedEager, useBreakpoints } from "@vueuse/core";
 import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 import { omit } from "lodash";
 import {
-  CheckoutLabeledBlock,
-  OrderSummary,
-  ProductCard,
-  ThankYou,
-  ShippingMethodDialog,
-  PaymentMethodDialog,
-  SelectAddressDialog,
-  AddOrUpdateAddressDialog,
-  ClearCartDialog,
-} from "@/shared/checkout";
-import { useCart, useCheckout } from "@/shared/cart";
-import { usePopup } from "@/shared/popup";
-import {
+  addGiftItems,
   CartAddressType,
   CustomerOrderType,
   GiftItemType,
@@ -532,20 +542,32 @@ import {
   MemberAddressType,
   PaymentMethodType,
   PaymentType,
+  rejectGiftItems,
   ShipmentType,
   ShippingMethodType,
   ValidationErrorType,
-} from "@/xapi/types";
+} from "@/xapi";
+import { AddressType, useElementVisibility, usePageHead } from "@/core";
+import {
+  AddOrUpdateAddressDialog,
+  CheckoutLabeledBlock,
+  ClearCartDialog,
+  OrderSummary,
+  PaymentMethodDialog,
+  ProductCard,
+  SelectAddressDialog,
+  ShippingMethodDialog,
+  ThankYou,
+} from "@/shared/checkout";
+import { useCart } from "@/shared/cart";
+import { usePopup } from "@/shared/popup";
 import { useUser, useUserAddresses, useUserCheckoutDefaults } from "@/shared/account";
-import { AddressType } from "@/core/types";
-import { addGiftItems, rejectGiftItems } from "@/xapi/graphql/cart";
-import { breakpointsTailwind, computedEager, useBreakpoints } from "@vueuse/core";
-import { useElementVisibility, usePageHead } from "@/core/composables";
 import { useNotifications } from "@/shared/notification";
 
 const breakpoints = useBreakpoints(breakpointsTailwind);
 const notifications = useNotifications();
 const router = useRouter();
+const { t } = useI18n();
 const { user, isAuthenticated } = useUser();
 const {
   loading,
@@ -563,19 +585,10 @@ const {
   updatePayment,
   updatePurchaseOrderNumber,
   removeCart,
+  createOrderFromCart,
+  createQuoteFromCart,
 } = useCart();
-
-const { t } = useI18n();
-
-const {
-  addresses,
-  isExistAddress,
-  loadAddresses,
-  addOrUpdateAddresses,
-  loading: loadingAddresses,
-} = useUserAddresses({ user });
-
-const { createOrder } = useCheckout();
+const { addresses, isExistAddress, loadAddresses, addOrUpdateAddresses } = useUserAddresses({ user });
 const { getUserCheckoutDefaults } = useUserCheckoutDefaults();
 const { openPopup, closePopup } = usePopup();
 
@@ -583,9 +596,16 @@ usePageHead({
   title: t("pages.checkout.meta.title"),
 });
 
+const breadcrumbs: IBreadcrumbs[] = [
+  { title: t("common.links.home"), route: { name: "Home" } },
+  { title: t("common.links.cart"), route: { name: "Cart" } },
+];
+
 const isMobile = breakpoints.smaller("lg");
 const placedOrder = shallowRef<CustomerOrderType | null>(null);
+const preparedData = ref(false);
 const creatingOrder = ref(false);
+const creatingQuote = ref(false);
 const showThankYouStep = ref(false);
 const cartComment = ref("");
 const cartCoupon = ref("");
@@ -604,34 +624,24 @@ const isVisibleStickyMobileHeader = computedEager<boolean>(
 const purchaseOrderNumberApplied = computedEager<boolean>(() => !!cart.value.purchaseOrderNumber);
 const cartCouponApplied = computedEager<boolean>(() => !!cart.value.coupons?.[0]?.code);
 
+const cartItems = computed(() =>
+  cart.value.items?.slice((page.value - 1) * itemsPerPage.value, page.value * itemsPerPage.value)
+);
+
 const shipment = computed<ShipmentType | undefined>(() => cart.value.shipments?.[0]);
 const payment = computed<PaymentType | undefined>(() => cart.value.payments?.[0]);
 
 const shippingMethods = computed<ShippingMethodType[]>(() => cart.value.availableShippingMethods ?? []);
 const paymentMethods = computed<PaymentMethodType[]>(() => cart.value.availablePaymentMethods ?? []);
 
-const cartItems = computed(() =>
-  cart.value.items?.slice((page.value - 1) * itemsPerPage.value, page.value * itemsPerPage.value)
-);
-
-const isValidCheckout = computed(
-  () =>
-    !loading.value &&
-    !loadingAddresses.value &&
-    !cart.value.validationErrors?.length &&
-    isValidShipment.value &&
-    isValidPayment.value
-);
-
 const isValidShipment = computed(() => shipment.value?.shipmentMethodCode && shipment.value?.deliveryAddress);
 const isValidPayment = computed(
   () => payment.value?.paymentGatewayCode && (billingSameAsShipping.value || payment.value?.billingAddress)
 );
 
-const breadcrumbs: IBreadcrumbs[] = [
-  { title: t("common.links.home"), route: { name: "Home" } },
-  { title: t("common.links.cart"), route: { name: "Cart" } },
-];
+const isValidCheckout = computed(
+  () => !cart.value.validationErrors?.length && isValidShipment.value && isValidPayment.value
+);
 
 async function useCoupon() {
   const validationResult: boolean = await validateCartCoupon(cartCoupon.value);
@@ -685,12 +695,12 @@ async function prepareOrderData() {
   }
 }
 
-async function placeOrder() {
+async function createOrder() {
   creatingOrder.value = true;
 
   await prepareOrderData();
 
-  placedOrder.value = await createOrder(cart.value.id!, false);
+  placedOrder.value = await createOrderFromCart(cart.value.id!);
 
   if (!placedOrder.value) {
     creatingOrder.value = false;
@@ -704,15 +714,39 @@ async function placeOrder() {
     return;
   }
 
-  fetchCart();
-
   if (isAuthenticated.value) {
     await router.push({ name: "OrderDetails", params: { orderId: placedOrder.value.id, new: "true" } });
   } else {
     showThankYouStep.value = true;
   }
 
+  await fetchCart();
+
   creatingOrder.value = false;
+}
+
+async function createQuote() {
+  creatingQuote.value = true;
+
+  const quote = await createQuoteFromCart(cart.value.id!);
+
+  if (!quote) {
+    creatingQuote.value = false;
+
+    notifications.error({
+      text: t("common.messages.creating_quote_error"),
+      duration: 15000,
+      single: true,
+    });
+
+    return;
+  }
+
+  // await router.push({ name: "QuoteDetails", params: { quoteId: quote?.id } });
+  await router.push({ name: "Quotes" });
+  await fetchCart();
+
+  creatingQuote.value = false;
 }
 
 function getItemValidationError(lineItemId: string): ValidationErrorType | undefined {
@@ -880,6 +914,15 @@ async function toggleGift(state: boolean, gift: GiftItemType) {
 onMounted(async () => {
   await fetchCart();
 
+  if (!cart.value.items?.length) {
+    preparedData.value = true;
+    return;
+  }
+
+  if (isAuthenticated.value) {
+    loadAddresses();
+  }
+
   purchaseOrderNumber.value = cart.value.purchaseOrderNumber ?? "";
   cartCoupon.value = cart.value.coupons?.[0]?.code ?? "";
   cartComment.value = cart.value.comment ?? "";
@@ -922,7 +965,7 @@ onMounted(async () => {
   if (reloadCart) {
     await fetchCart();
   }
-});
 
-loadAddresses();
+  preparedData.value = true;
+});
 </script>

@@ -2,10 +2,12 @@ import { MaybeRef } from "@vueuse/core";
 import { CartAddressType, MemberAddressType, OrderAddressType } from "@/xapi/types";
 import { LocationQueryValue } from "vue-router";
 
+export * from "./category-tree";
 export * from "./currency";
 export * from "./facet";
 export * from "./global-variables";
 export * from "./language";
+export * from "./menu";
 export * from "./modify";
 export * from "./role";
 export * from "./theme-context";
@@ -67,6 +69,8 @@ export interface IThemeConfigPreset {
   anonymous_access_enabled?: boolean;
   anonymous_price_enabled?: boolean;
   anonymous_checkout?: boolean;
+
+  quotes_enabled?: boolean;
 
   bulk_order_enabled?: boolean;
   product_compare_enabled?: boolean;
@@ -165,6 +169,7 @@ export interface IThemeConfigPreset {
   color_price?: string;
   color_mobile_menu_bg?: string;
   color_mobile_menu_link?: string;
+  color_mobile_menu_icon?: string;
   color_header_top_bg?: string;
   color_header_top_text?: string;
   color_header_top_link?: string;

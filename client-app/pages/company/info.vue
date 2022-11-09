@@ -8,11 +8,10 @@
     <div class="flex flex-col bg-white shadow-sm md:rounded md:border">
       <!-- Company name block -->
       <div class="flex flex-row p-5 gap-3 shadow [--tw-shadow:0_10px_15px_0_rgb(0_0_0_/_0.06)]">
-        <!-- TODO: :is-disabled="!userCanEditOrganization || loadingOrganization || loadingUser" -->
         <VcInput
           v-model.trim="organizationName"
           :label="$t('pages.company.info.labels.company_name')"
-          is-disabled
+          :is-disabled="!userCanEditOrganization || loadingOrganization || loadingUser"
           :error-message="errors[0]"
           name="organization-name"
           autocomplete="off"
@@ -20,20 +19,18 @@
           class="w-full"
         />
 
-        <!--
         <div class="pt-6" v-if="userCanEditOrganization">
           <VcButton
             :is-waiting="loadingOrganization || loadingUser"
             :is-disabled="!meta.valid || !meta.dirty"
             size="lg"
             class="uppercase my-0.5 !h-10"
-            @click="meta.valid && meta.dirty ? saveOrganizationName() : null"
+            @click="saveOrganizationName"
           >
             <i class="md:hidden px-2 fas fa-save text-2xl" />
             <span class="hidden md:inline mx-12">{{ $t("common.buttons.save") }}</span>
           </VcButton>
         </div>
-        -->
       </div>
 
       <!-- Content block -->
@@ -86,7 +83,6 @@
             :sort="sort"
             :pages="pages"
             :page="page"
-            :key="tableRefreshKey"
             layout="table-auto"
             @headerClick="applySorting"
             @pageChanged="onPageChange"
@@ -224,7 +220,7 @@
 
             <template #desktop-skeleton>
               <tr v-for="i in itemsPerPage" :key="i" class="even:bg-gray-50">
-                <td v-for="column in columns" class="px-5 py-4" :key="column.id">
+                <td v-for="column in columns.length" class="px-5 py-4" :key="column">
                   <div class="h-5 bg-gray-200 animate-pulse" />
                 </td>
               </tr>
@@ -237,34 +233,20 @@
 </template>
 
 <script setup lang="ts">
-/* eslint-disable @typescript-eslint/no-unused-vars */ // TODO: remove
 import { computed, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { computedEager } from "@vueuse/core";
 import { useField } from "vee-validate";
 import * as yup from "yup";
-import { usePageHead } from "@/core/composables";
+import { MemberAddressType } from "@/xapi";
+import { AddressType, getAddressName, getNewSorting, usePageHead, XApiPermissions } from "@/core";
 import { useUser } from "@/shared/account";
 import { usePopup } from "@/shared/popup";
-import {
-  DeleteCompanyAddressDialog,
-  useOrganization,
-  useOrganizationAddresses,
-  AddOrUpdateCompanyAddressDialog,
-} from "@/shared/company";
-import { ORGANIZATION_MAINTAINER, StorefrontPermissions } from "@/core/constants";
-import { getAddressName, getNewSorting } from "@/core/utilities";
-import { MemberAddressType } from "@/xapi/types";
+import { AddOrUpdateCompanyAddressDialog, useOrganization, useOrganizationAddresses } from "@/shared/company";
 import { useNotifications } from "@/shared/notification";
-import { AddressType } from "@/core/types";
 
-const loadingDeleting = ref(false);
-const loadingSaving = ref(false);
 const page = ref(1);
 const itemsPerPage = ref(10);
-
-// FIXME: Workaround to force rerender table to fix consiquent table item edit on mobile devices
-const tableRefreshKey = ref(0);
 
 const { t } = useI18n();
 
@@ -296,9 +278,7 @@ const { openPopup } = usePopup();
 const notifications = useNotifications();
 
 const organizationId = computed<string>(() => organization.value!.id);
-const userCanEditOrganization = computedEager<boolean>(() =>
-  checkPermissions(StorefrontPermissions.CanEditOrganization)
-);
+const userCanEditOrganization = computedEager<boolean>(() => checkPermissions(XApiPermissions.CanEditOrganization));
 
 const pages = computed<number>(() => Math.ceil(addresses.value.length / itemsPerPage.value));
 const paginatedAddresses = computed<MemberAddressType[]>(() =>
@@ -367,13 +347,15 @@ async function openDeleteAddressDialog(address: MemberAddressType) {
   }
 
   const closeDeleteAddressDialog = openPopup({
-    component: DeleteCompanyAddressDialog,
+    component: "VcConfirmationDialog",
     props: {
-      loading: loadingDeleting,
+      variant: "danger",
+      iconVariant: "danger",
+      loading: loadingAddresses,
+      title: t("shared.company.delete_address_dialog.title"),
+      text: t("shared.company.delete_address_dialog.text"),
       async onConfirm() {
         const previousPagesCount = pages.value;
-
-        loadingDeleting.value = true;
 
         await removeAddresses([address]);
 
@@ -392,8 +374,6 @@ async function openDeleteAddressDialog(address: MemberAddressType) {
         }
 
         closeDeleteAddressDialog();
-
-        loadingDeleting.value = false;
       },
     },
   });
@@ -404,10 +384,8 @@ async function openAddOrUpdateCompanyAddressDialog(address?: MemberAddressType):
     component: AddOrUpdateCompanyAddressDialog,
     props: {
       address,
-      loading: loadingSaving,
+      loading: loadingAddresses,
       async onResult(updatedAddress: MemberAddressType): Promise<void> {
-        loadingSaving.value = true;
-
         updatedAddress.addressType = AddressType.BillingAndShipping;
 
         await addOrUpdateAddresses([updatedAddress]);
@@ -421,34 +399,35 @@ async function openAddOrUpdateCompanyAddressDialog(address?: MemberAddressType):
         });
 
         closeAddOrUpdateAddressDialog();
-        tableRefreshKey.value++;
-
-        loadingSaving.value = false;
       },
     },
   });
 }
 
 function itemActionsBuilder(inputObject: MemberAddressType) {
-  const actions: SlidingActionsItem[] = [
-    {
-      icon: "fas fa-trash-alt",
-      title: t("common.buttons.delete"),
-      left: true,
-      classes: inputObject.isDefault ? "bg-gray-200" : "bg-[color:var(--color-danger)]",
-      clickHandler(address: MemberAddressType) {
-        openDeleteAddressDialog(address);
+  const actions: SlidingActionsItem[] = [];
+
+  if (userCanEditOrganization.value) {
+    actions.push(
+      {
+        icon: "fas fa-trash-alt",
+        title: t("common.buttons.delete"),
+        left: true,
+        classes: inputObject.isDefault ? "bg-gray-200" : "bg-[color:var(--color-danger)]",
+        clickHandler(address: MemberAddressType) {
+          openDeleteAddressDialog(address);
+        },
       },
-    },
-    {
-      icon: "fas fa-pencil-alt",
-      title: t("common.buttons.edit"),
-      classes: "bg-gray-550",
-      clickHandler(address: MemberAddressType) {
-        openAddOrUpdateCompanyAddressDialog(address);
-      },
-    },
-  ];
+      {
+        icon: "fas fa-pencil-alt",
+        title: t("common.buttons.edit"),
+        classes: "bg-gray-550",
+        clickHandler(address: MemberAddressType) {
+          openAddOrUpdateCompanyAddressDialog(address);
+        },
+      }
+    );
+  }
 
   return actions;
 }
