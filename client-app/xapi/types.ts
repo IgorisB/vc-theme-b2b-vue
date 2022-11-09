@@ -3716,11 +3716,6 @@ export type QueryPropertyArgs = {
 
 
 export type QueryQuoteArgs = {
-  id: Scalars['String'];
-};
-
-
-export type QueryQuoteArgs = {
   cultureName?: InputMaybe<Scalars['String']>;
   currencyCode?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['String']>;
@@ -4909,3 +4904,28 @@ export type GetQuotesQueryVariables = Exact<{
 
 
 export type GetQuotesQuery = { quotes?: { totalCount?: number, items?: Array<{ id: string, createdDate: any, customerId?: string, number: string, status?: string, totals?: { grandTotalInclTax?: { amount: any, decimalDigits: number, formattedAmount: string, formattedAmountWithoutCurrency: string, formattedAmountWithoutPoint: string, formattedAmountWithoutPointAndCurrency: string, currency?: { code: string, customFormatting?: string, exchangeRate?: any, symbol?: string } } } }> } };
+
+export type ConfirmTaskMutationVariables = Exact<{
+  command: ConfirmTaskCommandType;
+}>;
+
+
+export type ConfirmTaskMutation = { confirmTask?: { id: string } };
+
+export type RejectTaskMutationVariables = Exact<{
+  command: RejectTaskCommandType;
+}>;
+
+
+export type RejectTaskMutation = { rejectTask?: { id: string } };
+
+export type GetTasksQueryVariables = Exact<{
+  storeId?: InputMaybe<Scalars['String']>;
+  sort?: InputMaybe<Scalars['String']>;
+  responsibleName?: InputMaybe<Scalars['String']>;
+  after?: InputMaybe<Scalars['String']>;
+  first?: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type GetTasksQuery = { tasks?: { totalCount?: number, items?: Array<{ id: string, description?: string, completed?: boolean, isActive: boolean, priority?: number, type?: string, createdDate: any, dueDate?: any, parameters?: string }> } };
