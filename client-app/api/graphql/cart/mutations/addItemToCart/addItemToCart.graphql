@@ -1,0 +1,6 @@
+mutation AddItemToCart($command: InputAddItemType!) {
+  addItem(command: $command) {
+    name
+    itemsQuantity
+  }
+}

@@ -32,7 +32,7 @@
 
 <script setup lang="ts">
 import { WishlistLineItem } from "@/shared/wishlists";
-import type { LineItemType } from "@/xapi/types";
+import type { LineItemType } from "@/api/graphql/types";
 
 interface IEmits {
   (event: "remove:item", value: LineItemType): void;

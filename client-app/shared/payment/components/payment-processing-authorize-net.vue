@@ -66,12 +66,12 @@
 import { clone } from "lodash";
 import { computed, ref, shallowRef, watch, watchEffect } from "vue";
 import { useI18n } from "vue-i18n";
+import { initializePayment } from "@/api/graphql/cart";
 import { useGoogleAnalytics } from "@/core/composables";
 import { Logger } from "@/core/utilities";
 import { BankCardForm, PaymentActionType, useAuthorizeNet } from "@/shared/payment";
-import { initializePayment } from "@/xapi";
+import type { CustomerOrderType, KeyValueType } from "@/api/graphql/types";
 import type { BankCardErrorsType, BankCardType } from "@/shared/payment";
-import type { CustomerOrderType, KeyValueType } from "@/xapi/types";
 
 interface IEmits {
   (event: "success"): void;

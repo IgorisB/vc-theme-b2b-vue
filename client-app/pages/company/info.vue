@@ -244,8 +244,8 @@ import { useUser } from "@/shared/account";
 import { AddOrUpdateCompanyAddressDialog, useOrganization, useOrganizationAddresses } from "@/shared/company";
 import { useNotifications } from "@/shared/notification";
 import { usePopup } from "@/shared/popup";
+import type { MemberAddressType } from "@/api/graphql/types";
 import type { ISortInfo } from "@/core/types";
-import type { MemberAddressType } from "@/xapi/types";
 
 const page = ref(1);
 const itemsPerPage = ref(10);

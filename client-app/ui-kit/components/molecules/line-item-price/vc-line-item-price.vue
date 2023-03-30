@@ -13,7 +13,7 @@
 </template>
 
 <script setup lang="ts">
-import type { MoneyType } from "@/xapi/types";
+import type { MoneyType } from "@/api/graphql/types";
 
 interface IProps {
   listPrice?: MoneyType;

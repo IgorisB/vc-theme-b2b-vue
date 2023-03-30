@@ -57,7 +57,7 @@ import { useI18n } from "vue-i18n";
 import { number } from "yup";
 import { useGoogleAnalytics } from "@/core/composables";
 import useCart from "../composables/useCart";
-import type { LineItemType, Product, VariationType } from "@/xapi/types";
+import type { LineItemType, Product, VariationType } from "@/api/graphql/types";
 
 interface IEmits {
   (event: "update:lineItem", lineItem: LineItemType): void;

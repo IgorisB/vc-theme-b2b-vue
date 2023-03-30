@@ -82,7 +82,7 @@ import {
   WishlistCard,
   WishlistCardSkeleton,
 } from "@/shared/wishlists";
-import type { WishlistType } from "@/xapi/types";
+import type { WishlistType } from "@/api/graphql/types";
 
 const { t } = useI18n();
 const { openPopup } = usePopup();

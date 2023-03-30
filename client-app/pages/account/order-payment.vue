@@ -250,7 +250,7 @@ import {
 } from "@/shared/payment";
 import { usePopup } from "@/shared/popup";
 import { VcAddOrUpdateAddressModal } from "@/ui-kit/components";
-import type { InputOrderAddressType, OrderPaymentMethodType, PaymentInType } from "@/xapi/types";
+import type { InputOrderAddressType, OrderPaymentMethodType, PaymentInType } from "@/api/graphql/types";
 
 interface IProps {
   orderId: string;

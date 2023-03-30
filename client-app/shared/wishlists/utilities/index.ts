@@ -1,5 +1,5 @@
 import { getProductRoute } from "@/core/utilities";
-import type { LineItemType } from "@/xapi/types";
+import type { LineItemType } from "@/api/graphql/types";
 
 export function extendWishListItem(item: LineItemType) {
   return {

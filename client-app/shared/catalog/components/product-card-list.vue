@@ -150,7 +150,7 @@ import { getProductRoute } from "@/core/utilities";
 import { DiscountBadge, Vendor } from "@/shared/catalog";
 import { AddToCompareCatalog } from "@/shared/compare";
 import { AddToList } from "@/shared/wishlists";
-import type { Product } from "@/xapi/types";
+import type { Product } from "@/api/graphql/types";
 import type { PropType } from "vue";
 import type { RouteLocationRaw } from "vue-router";
 

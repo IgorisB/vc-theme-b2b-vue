@@ -112,7 +112,7 @@ import { QueryParamName } from "@/core/enums";
 import { configInjectionKey } from "@/core/injection-keys";
 import { useSearchBar } from "@/shared/layout";
 import SearchBarProductCard from "./_internal/search-bar-product-card.vue";
-import type { Category } from "@/xapi/types";
+import type { Category } from "@/api/graphql/types";
 
 // Number of categories column items in dropdown list
 const CATEGORIES_ITEMS_PER_COLUMN = 4;

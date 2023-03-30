@@ -1,5 +1,5 @@
 import { computed, readonly, ref, shallowRef } from "vue";
-import { searchCategories } from "@/xapi";
+import { searchCategories } from "@/api/graphql/catalog";
 import globals from "../globals";
 import { buildCategoryTree, Logger } from "../utilities";
 import { useThemeContext } from "./useThemeContext";

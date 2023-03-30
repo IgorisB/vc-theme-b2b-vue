@@ -1,6 +1,0 @@
-mutation ChangeComment($command: InputChangeCommentType!) {
-  changeComment(command: $command) {
-    name
-    itemsQuantity
-  }
-}

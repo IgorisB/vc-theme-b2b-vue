@@ -49,8 +49,8 @@
 
 <script setup lang="ts">
 import { CartLineItems } from "@/shared/cart";
+import type { LineItemType, ValidationErrorType } from "@/api/graphql/types";
 import type { LineItemsGroupByVendorType } from "@/core/types";
-import type { LineItemType, ValidationErrorType } from "@/xapi/types";
 
 interface IEmits {
   (event: "change:itemQuantity", value: { item: LineItemType; quantity: number }): void;

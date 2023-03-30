@@ -1,8 +1,8 @@
 import { ref, computed, readonly, shallowRef } from "vue";
+import { searchRelatedProducts } from "@/api/graphql/catalog";
 import { Logger } from "@/core/utilities";
-import { searchRelatedProducts } from "@/xapi/graphql/catalog";
-import type { RelatedProductsSearchParams } from "@/xapi/graphql/catalog";
-import type { Product } from "@/xapi/types";
+import type { RelatedProductsSearchParams } from "@/api/graphql/catalog";
+import type { Product } from "@/api/graphql/types";
 
 export default () => {
   const loading = ref(true);

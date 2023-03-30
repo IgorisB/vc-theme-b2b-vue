@@ -1,10 +1,10 @@
 import { computed, readonly, ref, shallowRef, unref } from "vue";
+import { deleteMemberAddresses, updateMemberAddresses } from "@/api/graphql/account";
+import { getOrganizationAddresses } from "@/api/graphql/organization";
 import { SORT_DESCENDING } from "@/core/constants";
 import { getSortingExpression, Logger, toInputAddress } from "@/core/utilities";
-import { deleteMemberAddresses, updateMemberAddresses } from "@/xapi/graphql/account";
-import { getOrganizationAddresses } from "@/xapi/graphql/organization";
+import type { InputMemberAddressType, MemberAddressType } from "@/api/graphql/types";
 import type { ISortInfo } from "@/core/types";
-import type { InputMemberAddressType, MemberAddressType } from "@/xapi/types";
 import type { MaybeRef } from "@vueuse/core";
 
 const requestedAddressesQuantity = 9999;

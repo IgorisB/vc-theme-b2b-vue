@@ -28,7 +28,7 @@
 import _ from "lodash";
 import { computed, ref } from "vue";
 import { prepareProperties, ProductProperty, ProductTitledBlock, Vendor } from "@/shared/catalog";
-import type { Product } from "@/xapi/types";
+import type { Product } from "@/api/graphql/types";
 
 interface IProps {
   product: Product;

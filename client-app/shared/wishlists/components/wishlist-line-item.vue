@@ -93,7 +93,7 @@ import { computed } from "vue";
 import { useGoogleAnalytics } from "@/core/composables";
 import { AddToCart } from "@/shared/cart";
 import { extendWishListItem } from "@/shared/wishlists";
-import type { LineItemType } from "@/xapi/types";
+import type { LineItemType } from "@/api/graphql/types";
 
 interface IEmits {
   (event: "remove"): void;

@@ -46,7 +46,7 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
 import { useCategoriesRoutes } from "@/core/composables";
-import type { Category } from "@/xapi/types";
+import type { Category } from "@/api/graphql/types";
 
 interface IEmits {
   (event: "select"): void;

@@ -27,7 +27,7 @@
 import { computed } from "vue";
 import { DEFAULT_PAGE_SIZE } from "@/core/constants";
 import { ProductCardGrid, ProductCardList, ProductSkeletonGrid, ProductSkeletonList } from "@/shared/catalog";
-import type { Product } from "@/xapi/types";
+import type { Product } from "@/api/graphql/types";
 import type { PropType } from "vue";
 
 defineEmits<{ (eventName: "item-link-click", product: Product, globalEvent: PointerEvent): void }>();

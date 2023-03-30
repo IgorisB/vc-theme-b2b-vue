@@ -1,7 +1,6 @@
 import { computed, ref, shallowRef } from "vue";
+import { addOrUpdateOrderPayment, getOrder } from "@/api/graphql/orders";
 import { getLineItemsGroupedByVendor, Logger } from "@/core/utilities";
-import { addOrUpdateOrderPayment, getOrder } from "@/xapi";
-import type { LineItemsGroupByVendorType } from "@/core/types";
 import type {
   CustomerOrderType,
   InputAddOrUpdateOrderPaymentType,
@@ -10,7 +9,8 @@ import type {
   OrderShipmentType,
   PaymentInType,
   QueryOrderArgs,
-} from "@/xapi/types";
+} from "@/api/graphql/types";
+import type { LineItemsGroupByVendorType } from "@/core/types";
 
 const loading = ref(false);
 const order = shallowRef<CustomerOrderType | null>(null);

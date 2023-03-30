@@ -1,8 +1,8 @@
 import { ref, shallowRef } from "vue";
+import { getQuotes } from "@/api/graphql/quotes";
 import { defaultSortInfo, getSortingExpression, Logger } from "@/core/utilities";
-import { getQuotes } from "@/xapi/graphql/quotes";
+import type { QuoteType } from "@/api/graphql/types";
 import type { ISortInfo } from "@/core/types";
-import type { QuoteType } from "@/xapi/types";
 import type { Ref } from "vue";
 
 const DEFAULT_ITEMS_PER_PAGE = 10;

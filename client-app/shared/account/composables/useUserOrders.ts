@@ -1,11 +1,11 @@
 import { computed, readonly, ref, shallowRef } from "vue";
+import { getOrders } from "@/api/graphql/orders";
 import { SORT_DESCENDING } from "@/core/constants";
 import { dateToIsoDateString, getSortingExpression, Logger } from "@/core/utilities";
-import { getOrders } from "@/xapi/graphql/orders";
 import useUserOrdersFilter from "./useUserOrdersFilter";
+import type { CustomerOrderType } from "@/api/graphql/types";
 import type { ISortInfo } from "@/core/types";
 import type { OrdersFilterData } from "@/shared/account";
-import type { CustomerOrderType } from "@/xapi/types";
 import type { Ref } from "vue";
 
 const DEFAULT_ITEMS_PER_PAGE = 10;

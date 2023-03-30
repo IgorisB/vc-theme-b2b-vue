@@ -1,9 +1,9 @@
 import { computed, reactive, readonly, ref, shallowRef, toRef, unref } from "vue";
+import { getSearchResults } from "@/api/graphql/catalog";
 import { Logger, sleep } from "@/core/utilities";
 import { highlightSearchText, prepareSearchText } from "@/shared/layout";
-import { getSearchResults } from "@/xapi/graphql/catalog";
-import type { SearchResultsParams } from "@/xapi/graphql/catalog";
-import type { Category, Product } from "@/xapi/types";
+import type { SearchResultsParams } from "@/api/graphql/catalog";
+import type { Category, Product } from "@/api/graphql/types";
 import type { MaybeRef } from "@vueuse/core";
 
 const DEFAULT_DURATION = 0; // No animation at the moment

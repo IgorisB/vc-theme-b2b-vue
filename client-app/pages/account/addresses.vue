@@ -200,8 +200,8 @@ import { AddressType } from "@/core/enums";
 import { useUserAddresses } from "@/shared/account";
 import { usePopup } from "@/shared/popup";
 import { VcAddOrUpdateAddressModal } from "@/ui-kit/components";
+import type { MemberAddressType } from "@/api/graphql/types";
 import type { ISortInfo } from "@/core/types";
-import type { MemberAddressType } from "@/xapi/types";
 
 const { t } = useI18n();
 const { countries, loadCountries } = useCountries();

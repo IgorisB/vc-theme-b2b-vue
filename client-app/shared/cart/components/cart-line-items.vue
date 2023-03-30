@@ -45,7 +45,7 @@
 <script setup lang="ts">
 import { groupBy } from "lodash";
 import { computed } from "vue";
-import type { LineItemType, ValidationErrorType } from "@/xapi/types";
+import type { LineItemType, ValidationErrorType } from "@/api/graphql/types";
 
 interface IProps {
   disabled?: boolean;

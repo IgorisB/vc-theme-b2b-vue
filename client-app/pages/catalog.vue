@@ -330,9 +330,9 @@ import {
 } from "@/shared/catalog";
 import { BranchesDialog, FFC_LOCAL_STORAGE } from "@/shared/fulfillmentCenters";
 import { usePopup } from "@/shared/popup";
+import type { Product } from "@/api/graphql/types";
 import type { FacetItemType, FacetValueItemType } from "@/core/types";
 import type { ProductsFilters, ProductsSearchParams } from "@/shared/catalog";
-import type { Product } from "@/xapi/types";
 import type { WatchStopHandle } from "vue";
 
 const props = defineProps<IProps>();

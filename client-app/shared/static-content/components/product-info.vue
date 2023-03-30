@@ -52,8 +52,8 @@
 import { useCurrency } from "@/core/composables";
 import { AddToCart } from "@/shared/cart";
 import { ProductDetails, ProductPriceBlock } from "@/shared/catalog";
+import type { Product } from "@/api/graphql/types";
 import type { PageContent } from "@/shared/static-content";
-import type { Product } from "@/xapi/types";
 import type { PropType } from "vue";
 
 defineProps({

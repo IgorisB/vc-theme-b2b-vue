@@ -1,6 +1,6 @@
 import { noop, useScriptTag } from "@vueuse/core";
+import { authorizePayment } from "@/api/graphql/cart";
 import { Logger } from "@/core/utilities";
-import { authorizePayment } from "@/xapi/graphql/cart";
 import type { MaybeRef } from "@vueuse/core";
 
 export default function useAuthorizeNet(options: { scriptURL: MaybeRef<string>; manualScriptLoading?: boolean }) {

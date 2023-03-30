@@ -1,5 +1,5 @@
+import type { OrderLineItemType, ValidationErrorType } from "@/api/graphql/types";
 import type { ItemForAddBulkItemsToCartResultsPopupType, OutputBulkItemType } from "@/shared/cart";
-import type { OrderLineItemType, ValidationErrorType } from "@/xapi/types";
 
 export function getLineItemValidationErrorsGroupedBySKU(
   errors: ValidationErrorType[] = []

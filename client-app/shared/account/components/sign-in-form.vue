@@ -80,9 +80,9 @@ import { isEmpty } from "lodash";
 import { useField, useForm } from "vee-validate";
 import { reactive, ref, watch } from "vue";
 import { object, string } from "yup";
+import { getMe } from "@/api/graphql/account";
+import { mergeCart } from "@/api/graphql/cart";
 import { useCart } from "@/shared/cart";
-import { getMe } from "@/xapi";
-import { mergeCart } from "@/xapi/graphql/cart";
 import useUser from "../composables/useUser";
 
 interface IEmits {

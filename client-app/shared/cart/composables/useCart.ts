@@ -2,10 +2,6 @@ import { computedEager } from "@vueuse/core";
 import { keyBy, sumBy } from "lodash";
 import { computed, readonly, ref, shallowRef } from "vue";
 import { useI18n } from "vue-i18n";
-import { getLineItemsGroupedByVendor, Logger } from "@/core/utilities";
-import { ClearCartModal, getLineItemValidationErrorsGroupedBySKU } from "@/shared/cart";
-import { useNotifications } from "@/shared/notification";
-import { usePopup } from "@/shared/popup";
 import {
   addBulkItemsCart,
   addCoupon,
@@ -17,16 +13,18 @@ import {
   changeCartComment,
   changeCartItemQuantity,
   changePurchaseOrderNumber,
-  createQuoteFromCart as _createQuoteFromCart,
-  getMyCart,
+  getCart,
   rejectGiftItems,
   removeCart as _removeCart,
   removeCartItem,
   removeCoupon,
   validateCoupon,
-} from "@/xapi";
-import type { LineItemsGroupByVendorType } from "@/core/types";
-import type { ExtendedGiftItemType, OutputBulkItemType } from "@/shared/cart";
+} from "@/api/graphql/cart";
+import { createQuoteFromCart as _createQuoteFromCart } from "@/api/graphql/quotes";
+import { getLineItemsGroupedByVendor, Logger } from "@/core/utilities";
+import { ClearCartModal, getLineItemValidationErrorsGroupedBySKU } from "@/shared/cart";
+import { useNotifications } from "@/shared/notification";
+import { usePopup } from "@/shared/popup";
 import type {
   CartType,
   InputNewBulkItemType,
@@ -39,7 +37,9 @@ import type {
   QuoteType,
   ShipmentType,
   ShippingMethodType,
-} from "@/xapi/types";
+} from "@/api/graphql/types";
+import type { LineItemsGroupByVendorType } from "@/core/types";
+import type { ExtendedGiftItemType, OutputBulkItemType } from "@/shared/cart";
 
 const loading = ref(false);
 const cart = shallowRef<CartType>({ name: "" });
@@ -73,7 +73,7 @@ export default function useCart() {
     loading.value = true;
 
     try {
-      cart.value = await getMyCart();
+      cart.value = await getCart();
     } catch (e) {
       Logger.error(`${useCart.name}.${fetchCart.name}`, e);
       throw e;

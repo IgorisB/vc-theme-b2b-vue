@@ -1,21 +1,21 @@
 import { computed, readonly, ref, shallowRef } from "vue";
-import { SORT_ASCENDING } from "@/core/constants";
-import { Logger, asyncForEach } from "@/core/utilities";
 import {
   addWishlist,
   addWishlistItem,
   deleteWishlist,
   deleteWishlistItem,
-  getWishList,
+  getWishlist,
   getWishlists,
   renameWishlist as _renameWishlist,
-} from "@/xapi/graphql/account";
+} from "@/api/graphql/account";
+import { SORT_ASCENDING } from "@/core/constants";
+import { Logger, asyncForEach } from "@/core/utilities";
 import type {
   InputAddWishlistItemType,
   InputRemoveWishlistItemType,
   InputRenameWishlistType,
   WishlistType,
-} from "@/xapi/types";
+} from "@/api/graphql/types";
 import type { Ref } from "vue";
 
 const loading = ref(true);
@@ -76,7 +76,7 @@ export default function useWishlists(options: { autoRefetch: boolean } = { autoR
     loading.value = true;
 
     try {
-      list.value = await getWishList(listId);
+      list.value = await getWishlist(listId);
     } catch (e) {
       Logger.error(`${useWishlists.name}.${fetchWishList.name}`, e);
       throw e;

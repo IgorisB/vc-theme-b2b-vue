@@ -1,7 +1,7 @@
 import { computed, readonly, ref, shallowRef } from "vue";
-import { getChildCategories } from "@/xapi";
+import { getChildCategories } from "@/api/graphql/catalog";
 import { Logger } from "../utilities";
-import type { QueryChildCategoriesArgs, Category } from "@/xapi/types";
+import type { QueryChildCategoriesArgs, Category } from "@/api/graphql/types";
 
 const loading = ref(true);
 const catalogMenuItems = shallowRef<Category[]>([]);

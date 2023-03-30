@@ -1,4 +1,4 @@
-import type { GiftItemType, ValidationErrorType } from "@/xapi/types";
+import type { GiftItemType, ValidationErrorType } from "@/api/graphql/types";
 
 export type ExtendedGiftItemType = GiftItemType & { isAddedInCart?: boolean };
 

@@ -1,6 +1,8 @@
 import { omit } from "lodash";
 import { computed, readonly, ref, shallowRef } from "vue";
 import { useI18n } from "vue-i18n";
+import { removeCart } from "@/api/graphql/cart";
+import { createOrderFromCart as _createOrderFromCart } from "@/api/graphql/orders";
 import { useGoogleAnalytics } from "@/core/composables";
 import { AddressType } from "@/core/enums";
 import { isEqualAddresses, Logger } from "@/core/utilities";
@@ -11,9 +13,7 @@ import { useNotifications } from "@/shared/notification";
 import { PaymentMethodGroupType } from "@/shared/payment";
 import { usePopup } from "@/shared/popup";
 import { VcAddOrUpdateAddressModal } from "@/ui-kit/components";
-import { createOrderFromCart as _createOrderFromCart, removeCart } from "@/xapi";
 import { SelectAddressModal } from "../components";
-import type { AnyAddressType } from "@/core/types";
 import type {
   CartAddressType,
   CustomerOrderType,
@@ -22,7 +22,8 @@ import type {
   MemberAddressType,
   PaymentMethodType,
   ShippingMethodType,
-} from "@/xapi/types";
+} from "@/api/graphql/types";
+import type { AnyAddressType } from "@/core/types";
 
 const loading = ref(false);
 const comment = ref("");

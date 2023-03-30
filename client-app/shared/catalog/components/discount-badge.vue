@@ -25,7 +25,7 @@
 
 <script setup lang="ts">
 import { computedEager } from "@vueuse/shared";
-import type { PriceType } from "@/xapi/types";
+import type { PriceType } from "@/api/graphql/types";
 import type { PropType } from "vue";
 
 const props = defineProps({

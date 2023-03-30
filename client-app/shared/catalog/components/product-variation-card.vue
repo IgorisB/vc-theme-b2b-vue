@@ -65,7 +65,7 @@ import _ from "lodash";
 import { computed } from "vue";
 import { AddToCart } from "@/shared/cart";
 import { prepareProperties, VariationProperty, Vendor } from "@/shared/catalog";
-import type { Product, VariationType } from "@/xapi/types";
+import type { Product, VariationType } from "@/api/graphql/types";
 import type { PropType } from "vue";
 
 const props = defineProps({

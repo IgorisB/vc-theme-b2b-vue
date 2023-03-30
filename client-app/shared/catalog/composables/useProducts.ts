@@ -1,10 +1,10 @@
 import { computed, inject, readonly, ref, shallowRef } from "vue";
+import { searchProducts } from "@/api/graphql/catalog";
 import { configInjectionKey } from "@/core/injection-keys";
 import { Logger, rangeFacetToCommonFacet, termFacetToCommonFacet } from "@/core/utilities";
-import { searchProducts } from "@/xapi/graphql/catalog";
 import type { ProductsSearchParams } from "../types";
+import type { Product } from "@/api/graphql/types";
 import type { FacetItemType } from "@/core/types";
-import type { Product } from "@/xapi/types";
 
 const DEFAULT_ITEMS_PER_PAGE = 16;
 

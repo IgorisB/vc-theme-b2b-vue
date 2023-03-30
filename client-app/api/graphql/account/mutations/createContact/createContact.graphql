@@ -1,0 +1,5 @@
+mutation CreateContact($command: InputCreateContactType!) {
+  createContact(command: $command) {
+    id
+  }
+}

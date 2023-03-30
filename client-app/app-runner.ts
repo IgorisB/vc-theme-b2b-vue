@@ -12,16 +12,8 @@ import { useUser } from "@/shared/account";
 import ProductBlocks from "@/shared/catalog/components/product";
 import { templateBlocks } from "@/shared/static-content";
 import * as UIKitComponents from "@/ui-kit/components";
-import { graphqlClient } from "@/xapi";
 import App from "./App.vue";
 import type { Plugin } from "vue";
-
-// Workaround before Nuxt3 migration, will be deleted later.
-window.useNuxtApp = () => {
-  return {
-    $graphqlClient: graphqlClient,
-  };
-};
 
 export default async (getPlugins: (options: any) => { plugin: Plugin; options: any }[] = () => []) => {
   const appSelector = "#app";

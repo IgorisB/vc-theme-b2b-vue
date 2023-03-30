@@ -162,8 +162,8 @@ import { useElementVisibility, useRouteQueryParam, usePageHead } from "@/core/co
 import { QueryParamName } from "@/core/enums";
 import { getSortingExpression, getSortInfoFromStringExpression } from "@/core/utilities";
 import { PageToolbarBlock, useUserQuotes } from "@/shared/account";
+import type { QuoteType } from "@/api/graphql/types";
 import type { ISortInfo } from "@/core/types";
-import type { QuoteType } from "@/xapi/types";
 
 const { t } = useI18n();
 const router = useRouter();

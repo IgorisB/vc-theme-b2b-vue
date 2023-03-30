@@ -1,5 +1,5 @@
 import { useI18n } from "vue-i18n";
-import type { Property } from "@/xapi/types";
+import type { Property } from "@/api/graphql/types";
 
 export function prepareProperties(properties: Property[], propName: string) {
   const { t, d } = useI18n();

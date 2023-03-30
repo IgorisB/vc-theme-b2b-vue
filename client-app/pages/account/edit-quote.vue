@@ -148,7 +148,7 @@ import { QuoteLineItems, useUserAddresses, useUserQuote } from "@/shared/account
 import { SelectAddressModal } from "@/shared/checkout";
 import { usePopup } from "@/shared/popup";
 import { VcAddOrUpdateAddressModal } from "@/ui-kit/components";
-import type { MemberAddressType, QuoteAddressType, QuoteItemType, QuoteType } from "@/xapi/types";
+import type { MemberAddressType, QuoteAddressType, QuoteItemType, QuoteType } from "@/api/graphql/types";
 
 interface IProps {
   quoteId: string;

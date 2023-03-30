@@ -52,7 +52,7 @@ import { useField, useForm } from "vee-validate";
 import { computed } from "vue";
 import { string } from "yup";
 import useWishlists from "../composables/useWishlists";
-import type { WishlistType } from "@/xapi/types";
+import type { WishlistType } from "@/api/graphql/types";
 
 interface IProps {
   list?: WishlistType;
