@@ -18,7 +18,7 @@
             class="mb-3 text-base font-extrabold uppercase text-white"
           ></div>
           <div class="flex flex-col space-y-1">
-            <FooterLink v-t="'shared.layout.footer.about_us_link'" to="/about"></FooterLink>
+            <FooterLink v-t="'shared.layout.footer.about_us_link'" to="/landing/about"></FooterLink>
             <FooterLink v-t="'shared.layout.footer.investor_relations_link'" to="/investor-relations"></FooterLink>
             <FooterLink v-t="'shared.layout.footer.supplier_overview_link'" to="/supplier-overview"></FooterLink>
             <FooterLink v-t="'shared.layout.footer.worldwide_link'" to="/worldwide"></FooterLink>

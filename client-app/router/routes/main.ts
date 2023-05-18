@@ -27,6 +27,7 @@ const Catalog = () => import("@/pages/catalog.vue");
 const Category = () => import("@/pages/category.vue");
 const Product = () => import("@/pages/product.vue");
 const Branch = () => import("@/pages/branch.vue");
+const Landing = () => import("@/pages/landing.vue");
 
 // Private development pages
 const DemoLanding = () => import("@/pages/demo-landing.vue");
@@ -95,6 +96,8 @@ export const mainRoutes: RouteRecordRaw[] = [
   { path: "/catalog", name: "Catalog", component: Catalog, props: true },
   { path: "/category/:categoryId", name: "Category", component: Category, props: true },
   { path: "/product/:productId", name: "Product", component: Product, props: true },
+
+  { path: "/landing/:pathMatch(.*)*", name: "Landing", component: Landing, props: true },
 
   /** NOTE: Always leave it last. */
   { path: "/:pathMatch(.*)*", name: "Matcher", component: Matcher, props: true },
