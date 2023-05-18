@@ -51,20 +51,27 @@ function getRegisteredComponents() {
       image: "https://tabler-icons.io/static/tabler-icons/icons-png/building-store.png",
       inputs: [
         {
-          name: "title",
-          type: "string",
-        },
-        {
-          name: "subtitle",
-          type: "string",
-        },
-        {
-          name: "query",
-          type: "string",
-        },
-        {
-          name: "count",
-          type: "number",
+          name: "model",
+          type: "object",
+          defaultValue: {},
+          subFields: [
+            {
+              name: "title",
+              type: "string",
+            },
+            {
+              name: "subtitle",
+              type: "string",
+            },
+            {
+              name: "query",
+              type: "string",
+            },
+            {
+              name: "count",
+              type: "number",
+            },
+          ],
         },
       ],
     },

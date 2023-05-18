@@ -6,7 +6,7 @@ In this artcile I'm going to create a landing page created in [builder.io](https
 
 1. Clone the [latest theme commit](https://github.com/VirtoCommerce/vc-theme-b2b-vue.git)
 
-1. Add new component into the pages folder. Lets call it `Landing`.
+2. Add new component into the pages folder. Lets call it `Landing`.
 
 ```html
 <template>
@@ -49,7 +49,7 @@ public api key is in [account settings](https://builder.io/account/space)
 
 More infomation is in the [official documentation](https://www.builder.io/c/docs/integrating-builder-pages)
 
-1. In order to add a custom component it's neccessary to add the following code into `landing.vue`
+3. In order to add a custom component it's neccessary to add the following code into `landing.vue`
 
 ```html
 <script setup lang="ts">
@@ -74,20 +74,27 @@ function getRegisteredComponents() {
       image: "https://tabler-icons.io/static/tabler-icons/icons-png/building-store.png",
       inputs: [
         {
-          name: "title",
-          type: "string",
-        },
-        {
-          name: "subtitle",
-          type: "string",
-        },
-        {
-          name: "query",
-          type: "string",
-        },
-        {
-          name: "count",
-          type: "number",
+          name: "model",
+          type: "object",
+          defaultValue: {},
+          subFields: [
+            {
+              name: "title",
+              type: "string",
+            },
+            {
+              name: "subtitle",
+              type: "string",
+            },
+            {
+              name: "query",
+              type: "string",
+            },
+            {
+              name: "count",
+              type: "number",
+            },
+          ],
         },
       ],
     },
@@ -101,7 +108,7 @@ And add the `custom-components` property to the `RenderContent` component
 <RenderContent model="page" :content="content" :api-key="apiKey" :custom-components="getRegisteredComponents()" />
 ```
 
-1. Add route rule  in the `router/routes/main.ts` file.
+4. Add route rule  in the `router/routes/main.ts` file.
 ```ts
 ...
 // import component
@@ -118,14 +125,14 @@ In some cases, import from `@builder.io/sdk-vue/vue3` throw a compile time error
 declare module "@builder.io/sdk-vue/vue3";
 ```
 
-1. Go to the `builder.io` app and add a new page
+5. Go to the `builder.io` app and add a new page
 
 ![create a new page](docs/images/create-page.png)
 
 Then open an [account settings](https://builder.io/account/space) and set the preview url
 ![account settings](docs/images/account-settings.png)
 
-1. Add blocks into page in the page designer
+6. Add blocks into page in the page designer
 
 ![page in builder.io](docs/images/create-page.png)
 
@@ -137,18 +144,13 @@ or the `bolt` balue
 
 ![query=bolt](docs/images/products-block-bolt.png)
 
-1. Publish page
+7. Publish page
 ![page publishing](docs/images/publishing.png)
 
-1. Run local app with the `yarn run dev` command
+8. Run local app with the `yarn run dev` command
 
-1. Open [the About page](https://localhost:3000/landing/about)
+9. Open [the About page](https://localhost:3000/landing/about)
 ![And a result](docs/images/result.png)
-
-## Disclaimer
-
-For this example I changed the [product-block](https://github.com/VirtoCommerce/vc-theme-b2b-vue/commit/a6dea06fdfec9112ef36ad7bc026d5ce007c437c#diff-9d81565f228c43847af42cc6d4607648e120d986ef1faa91eb0d9abdd9c7eaa7) component. Because `builder.io` returns the plain properties for this block, but block expects the `model` object with these properties.
-
 
 You can find this example on [`github`](https://github.com/VirtoCommerce/vc-theme-b2b-vue/tree/integrations/builder.io).
 
