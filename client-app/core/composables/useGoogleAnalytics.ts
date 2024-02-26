@@ -18,7 +18,7 @@ type EventParamsType = Gtag.ControlParams & Gtag.EventParams & Gtag.CustomParams
 type EventParamsExtendedType = EventParamsType & { item_list_id?: string; item_list_name?: string };
 
 const { storeSettings } = useAppContext();
-
+// todo add googleAnalyticsEnabled to themeContext
 const isAvailableGtag: Readonly<boolean> = Boolean(IS_CLIENT && storeSettings.googleAnalyticsEnabled && window.gtag);
 
 function getCategories(breadcrumbs: Breadcrumb[] = []): Record<string, string> {
