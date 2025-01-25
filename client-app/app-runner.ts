@@ -6,7 +6,8 @@ import { apolloClient, getStore } from "@/core/api/graphql";
 import { useCurrency, useThemeContext, useWhiteLabeling, useNavigations } from "@/core/composables";
 import { useHotjar } from "@/core/composables/useHotjar";
 import { useLanguages } from "@/core/composables/useLanguages";
-import { FALLBACK_LOCALE, IS_DEVELOPMENT } from "@/core/constants";
+/* import { FALLBACK_LOCALE, IS_DEVELOPMENT } from "@/core/constants";*/
+import { FALLBACK_LOCALE} from "@/core/constants";
 import { setGlobals } from "@/core/globals";
 import { applicationInsightsPlugin, authPlugin, configPlugin, contextPlugin, permissionsPlugin } from "@/core/plugins";
 import { extractHostname, getBaseUrl, Logger } from "@/core/utilities";
@@ -79,10 +80,13 @@ export default async () => {
     },
   };
 
+/** 
   const store = (await getStore(
     IS_DEVELOPMENT ? extractHostname(import.meta.env.APP_BACKEND_URL as string) : window.location.hostname,
   )) as StoreResponseType;
-
+*/
+const store = (await getStore(extractHostname(import.meta.env.APP_BACKEND_URL as string))) as StoreResponseType;
+  
   if (!store) {
     alert("Related store not found. Please contact your site administrator.");
     throw new Error("Store not found. Check graphql request, GetStore query");
